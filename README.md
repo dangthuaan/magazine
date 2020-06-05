@@ -1,0 +1,2 @@
+# magazine
+OMT Magazine Project
