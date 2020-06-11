@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,27 @@ Route::namespace('Client')
             return view('client.post.index');
         })->name('post.index');
     });
+
+Route::namespace('Admin')
+    ->name('admin.')
+    ->prefix('admin')
+    ->group(function () {
+        Route::get('/', 'HomeController@index')->name('index');
+        Route::get('/login', 'HomeController@login')->name('login');
+        Route::get('/users', 'UserController@list')->name('users.list');
+        Route::get('/groups', 'UserController@group')->name('users.group');
+        Route::get('/posts', 'PostController@list')->name('posts.list');
+        Route::get('/categories', 'CategoryController@list')->name('categories.list');
+        Route::get('/profile', 'ProfileController@overview')->name('profile.overview');
+        Route::get('/profile/password', 'ProfileController@password')->name('profile.password');
+    });
+
+Route::get('/clear-cache', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+    Artisan::call('optimize:clear');
+
+    return "Cache is cleared";
+});
