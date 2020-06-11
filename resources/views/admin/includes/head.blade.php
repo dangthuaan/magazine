@@ -30,7 +30,7 @@
     <link href="{{ asset('metronic/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
 
     <!--begin::Page Custom Styles(used by this page) -->
-    <link href="{{ asset('metronic/css/demo1/pages/general/login/login-4.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('metronic/css/demo1/pages/general/login/login-3.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Page Custom Styles -->
 
@@ -84,7 +84,7 @@
     <link href="{{ asset('css/admin.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Layout Skins -->
-    <link rel="icon" type="image/png" href="{{ asset('storage/images/basic/favicon.png') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('metronic/media/logos/favicon.ico') }}" />
 </head>
 
 <!-- end::Head -->

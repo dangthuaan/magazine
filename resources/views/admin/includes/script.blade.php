@@ -99,8 +99,3 @@
 
 <script src="{{ asset('js/alerts.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/admin.js') }}" type="text/javascript"></script>
-
-<!--begin::Page Scripts(used by this page) -->
-<script src="{{ asset('metronic/js/demo1/pages/login/login-general.js') }}" type="text/javascript"></script>
-
-<!--end::Page Scripts -->
