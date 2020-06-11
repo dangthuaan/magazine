@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
 
         <!--begin:: Widgets/Latest Posts-->
         <div class="kt-portlet kt-portlet--height-fluid">

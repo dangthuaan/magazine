@@ -26,4 +26,24 @@ class HomeController extends Controller
     {
         return view('admin.login');
     }
+
+    /**
+     * Register.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function register()
+    {
+        return view('admin.register');
+    }
+
+    /**
+     * Forgot.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function forgot()
+    {
+        return view('admin.forgot');
+    }
 }

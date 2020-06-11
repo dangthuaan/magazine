@@ -15,8 +15,8 @@
 
     <!-- begin:: Page -->
     <div class="kt-grid kt-grid--ver kt-grid--root">
-        <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v4 kt-login--signin" id="kt_login">
-            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" style="background-image: url(/metronic/media/bg/bg-2.jpg);">
+        <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v3 kt-login--signin" id="kt_login">
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" style="background-image: url(/metronic/media//bg/bg-3.jpg);">
                 <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
                     <div class="kt-login__container">
                         <div class="kt-login__logo">
@@ -43,11 +43,11 @@
                                         </label>
                                     </div>
                                     <div class="col kt-align-right">
-                                        <a href="javascript:;" id="kt_login_forgot" class="kt-login__link">Forget Password ?</a>
+                                        <a href="{{ route('admin.forgot') }}" id="kt_login_forgot" class="kt-login__link">Forget Password ?</a>
                                     </div>
                                 </div>
                                 <div class="kt-login__actions">
-                                    <button id="kt_login_signin_submit" class="btn btn-brand btn-pill kt-login__btn-primary">Sign In</button>
+                                    <button id="kt_login_signin_submit" class="btn btn-brand btn-elevate kt-login__btn-primary">Sign In</button>
                                 </div>
                             </form>
                         </div>
@@ -58,13 +58,7 @@
                             </div>
                             <form class="kt-form" action="">
                                 <div class="input-group">
-                                    <input class="form-control" type="text" placeholder="First Name" name="first_name">
-                                </div>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" placeholder="Last Name" name="last_name">
-                                </div>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" placeholder="Username" name="username">
+                                    <input class="form-control" type="text" placeholder="Fullname" name="fullname">
                                 </div>
                                 <div class="input-group">
                                     <input class="form-control" type="text" placeholder="Email" name="email" autocomplete="off">
@@ -75,9 +69,18 @@
                                 <div class="input-group">
                                     <input class="form-control" type="password" placeholder="Confirm Password" name="rpassword">
                                 </div>
+                                <div class="row kt-login__extra">
+                                    <div class="col kt-align-left">
+                                        <label class="kt-checkbox">
+                                            <input type="checkbox" name="agree">I Agree the <a href="#" class="kt-link kt-login__link kt-font-bold">terms and conditions</a>.
+                                            <span></span>
+                                        </label>
+                                        <span class="form-text text-muted"></span>
+                                    </div>
+                                </div>
                                 <div class="kt-login__actions">
-                                    <button id="kt_login_signup_submit" class="btn btn-brand btn-pill kt-login__btn-primary">Sign Up</button>&nbsp;&nbsp;
-                                    <button id="kt_login_signup_cancel" class="btn btn-secondary btn-pill kt-login__btn-secondary">Cancel</button>
+                                    <button id="kt_login_signup_submit" class="btn btn-brand btn-elevate kt-login__btn-primary">Sign Up</button>&nbsp;&nbsp;
+                                    <button id="kt_login_signup_cancel" class="btn btn-light btn-elevate kt-login__btn-secondary">Cancel</button>
                                 </div>
                             </form>
                         </div>
@@ -91,8 +94,8 @@
                                     <input class="form-control" type="text" placeholder="Email" name="email" id="kt_email" autocomplete="off">
                                 </div>
                                 <div class="kt-login__actions">
-                                    <button id="kt_login_forgot_submit" class="btn btn-brand btn-pill kt-login__btn-primary">Request</button>&nbsp;&nbsp;
-                                    <button id="kt_login_forgot_cancel" class="btn btn-secondary btn-pill kt-login__btn-secondary">Cancel</button>
+                                    <button id="kt_login_forgot_submit" class="btn btn-brand btn-elevate kt-login__btn-primary">Request</button>&nbsp;&nbsp;
+                                    <button id="kt_login_forgot_cancel" class="btn btn-light btn-elevate kt-login__btn-secondary">Cancel</button>
                                 </div>
                             </form>
                         </div>
@@ -101,7 +104,7 @@
                                 Don't have an account yet ?
                             </span>
                             &nbsp;&nbsp;
-                            <a href="javascript:;" id="kt_login_signup" class="kt-login__account-link">Sign Up!</a>
+                            <a href="{{ route('admin.register') }}" id="kt_login_signup" class="kt-login__account-link">Sign Up!</a>
                         </div>
                     </div>
                 </div>

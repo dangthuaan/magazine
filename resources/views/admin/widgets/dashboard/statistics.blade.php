@@ -2,7 +2,7 @@
     <div class="kt-portlet__body kt-portlet__body--fit">
 
         <div class="row row-no-padding row-col-separator-xl">
-            <div class="col-md-12 col-lg-12 col-xl-4">
+            <div class="col-md-12 col-lg-12 col-xl-12">
                 <!--begin:: Widgets/Stats2-1 -->
                 <div class="kt-widget1">
                     <div class="kt-widget1__item">

@@ -34,6 +34,8 @@ Route::namespace('Admin')
     ->group(function () {
         Route::get('/', 'HomeController@index')->name('index');
         Route::get('/login', 'HomeController@login')->name('login');
+        Route::get('/register', 'HomeController@register')->name('register');
+        Route::get('/forgot', 'HomeController@forgot')->name('forgot');
         Route::get('/users', 'UserController@list')->name('users.list');
         Route::get('/groups', 'UserController@group')->name('users.group');
         Route::get('/posts', 'PostController@list')->name('posts.list');
