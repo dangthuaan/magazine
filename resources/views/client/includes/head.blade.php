@@ -5,7 +5,7 @@
 
     <title>Magazine</title>
 
-    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="icon" type="image/png" href="{{ asset('storage/images/basic/favicon.png') }}" />
 
     <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
 
