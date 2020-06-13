@@ -16,6 +16,15 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
+Route::namespace('Auth')
+    ->name('auth.')
+    ->group(function () {
+        Route::get('/login', 'LoginController@index')->name('login');
+        Route::post('/login', 'LoginController@authenticate')->name('login.authenticate');
+        Route::get('/register', 'RegisterController@index')->name('register');
+        Route::post('/register', 'RegisterController@store')->name('register.store');
+    });
+
 Route::namespace('Client')
     ->name('client.')
     ->group(function () {
