@@ -69,7 +69,8 @@ Route::middleware('verified')
         })->name('post.index');
     });
 
-Route::namespace('Admin')
+Route::middleware(['auth', 'verified'])
+    ->namespace('Admin')
     ->name('admin.')
     ->prefix('admin')
     ->group(function () {
@@ -78,8 +79,13 @@ Route::namespace('Admin')
         Route::get('/groups', 'UserController@group')->name('users.group');
         Route::get('/posts', 'PostController@list')->name('posts.list');
         Route::get('/categories', 'CategoryController@list')->name('categories.list');
+
+        //update user profile
         Route::get('/profile', 'ProfileController@overview')->name('profile.overview');
+        Route::post('/profile', 'ProfileController@update')->name('profile.update');
+
         Route::get('/profile/password', 'ProfileController@password')->name('profile.password');
+        Route::post('/profile/password', 'ProfileController@updatePassword')->name('profile.password.update');
     });
 
 Route::get('/clear-cache', function () {

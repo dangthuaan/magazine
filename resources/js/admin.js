@@ -42,7 +42,8 @@ $(document).ready(function () {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('.post-cover-preview').attr('src', e.target.result);
+                // $('.post-cover-preview').attr('src', e.target.result);
+                document.body.style.backgroundImage = 'url(' + e.target.result + ')';
             }
 
             reader.readAsDataURL(input.files[0]); // convert to base64 string

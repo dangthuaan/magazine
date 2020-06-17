@@ -40,4 +40,24 @@ class User extends Authenticatable
     {
         return !is_null($this->email_verified_at);
     }
+
+    /**
+     * Accessor: get uppercase first letter of first name.
+     *
+     * @return string
+     */
+    public function getFirstLetterOfFirstNameAttribute()
+    {
+        return ucfirst(mb_substr($this->first_name, 0, 1, "UTF-8"));
+    }
+
+    /**
+     * Determine if the user has verified their email address.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
 }

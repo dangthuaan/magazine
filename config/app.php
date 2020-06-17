@@ -163,6 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         App\Providers\UserServiceProvider::class,
+        App\Providers\ProfileServiceProvider::class,
 
         /*
          * Package Service Providers...
