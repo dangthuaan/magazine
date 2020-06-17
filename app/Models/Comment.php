@@ -40,8 +40,8 @@ class Comment extends Model
     /**
      * relationship with posts.
      */
-    public function posts()
+    public function post()
     {
-        return $this->belongsToMany('App\Models\Post');
+        return $this->belongsTo('App\Models\Post');
     }
 }

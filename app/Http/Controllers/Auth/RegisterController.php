@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\User;
-use App\Contracts\BaseInterface;
-use App\Contracts\UserInterface;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RegisterRequest;
+use App\Repositories\User\UserInterface;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
@@ -20,7 +21,7 @@ class RegisterController extends Controller
     /**
      * Register User Constructor
      *
-     * @param \App\Repositories\User\UserInterface $user
+     * @param UserInterface $user
      */
     public function __construct(UserInterface $user)
     {
@@ -28,9 +29,9 @@ class RegisterController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display register page.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -38,17 +39,17 @@ class RegisterController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store register information.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param RegisterRequest $request
+     * @return RedirectResponse
      */
     public function store(RegisterRequest $request)
     {
-        $registration = $this->user->register($request->except('password_confirmation'));
+        $registration = $this->user->register($request->except('password_confirmation'), true);
 
         if ($registration) {
-            return redirect()->route('auth.login');
+            return redirect()->route('auth.register.verify.index', ['id' => $registration->id]);
         }
 
         return back()->with('error', 'Something went wrong!');

@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\Repositories\Base;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use App\Contracts\BaseInterface;
 use Illuminate\Http\Response;
 
 class BaseRepository implements BaseInterface
@@ -35,9 +34,20 @@ class BaseRepository implements BaseInterface
     }
 
     /**
+     * Find a resource.
+     *
+     * @param string $attribute
+     * @return Collection|Model[]
+     */
+    public function find($data, $attribute = 'id')
+    {
+        return $this->model->where($attribute, '=', $data)->first();
+    }
+
+    /**
      * Create new resource.
      *
-     * @param Array $data
+     * @param array $data
      * @return Response
      */
     public function create($data)
@@ -48,12 +58,12 @@ class BaseRepository implements BaseInterface
     /**
      * Update a specific resource.
      *
-     * @param Int $id
-     * @param String $attribute
-     * @param Array $data
+     * @param int $id
+     * @param string $attribute
+     * @param array $data
      * @return Response
      */
-    public function update($id, $attribute = 'id', $data)
+    public function update($id, $data, $attribute = 'id')
     {
         return $this->model->where($attribute, '=', $id)->update($data);
     }
@@ -67,5 +77,18 @@ class BaseRepository implements BaseInterface
     public function delete($id)
     {
         return $this->model->destroy($id);
+    }
+
+    /**
+     * Store a session.
+     *
+     * @param $request
+     * @param $key
+     * @param $value
+     * @return Boolean
+     */
+    public function session($request, $key, $value)
+    {
+        return $request->session()->put($key, $value);
     }
 }
