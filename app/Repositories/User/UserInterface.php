@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Contracts;
+namespace App\Repositories\User;
 
+use App\Repositories\Base\BaseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 

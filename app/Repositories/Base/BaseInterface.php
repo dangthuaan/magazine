@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contracts;
+namespace App\Repositories\Base;
 
 use Illuminate\Http\Response;
 

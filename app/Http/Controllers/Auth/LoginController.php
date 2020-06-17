@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Contracts\UserInterface;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
-use Illuminate\Http\Response;
+use App\Repositories\User\UserInterface;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
@@ -28,7 +31,7 @@ class LoginController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -39,16 +42,42 @@ class LoginController extends Controller
      * Authenticate User.
      *
      * @param LoginRequest $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function authenticate(LoginRequest $request)
     {
-        $authentication = $this->user->authenticate($request->only('username', 'password'));
+        //authenticate user
+        $authentication = $this->user->authenticate($request->only('username', 'password'), $request->remember);
 
-        if ($authentication) {
-            return redirect()->route('client.index');
+        if (!$authentication) {
+            return back()->with('error', 'These credentials do not match our records.');
         }
 
-        return back()->with('error', 'Something went wrong!');
+        //check email is verified or not
+        $checkVerify = $this->user->checkVerifiedUser($request->only('username'));
+
+        if (!$checkVerify) {
+            return back()->with('error',
+                'You need to confirm your account. We have sent you an activation code, please check your email.');
+        }
+
+        //if "remember me" is checked
+        if ($request->remember) {
+            $this->user->setRememberTokenTime(config('remember.expire_time'));
+        }
+
+        return redirect()->route('client.index');
+    }
+
+    /**
+     * Logout
+     *
+     * @return RedirectResponse
+     */
+    public function logout()
+    {
+        $this->user->logout();
+
+        return redirect()->route('client.index');
     }
 }

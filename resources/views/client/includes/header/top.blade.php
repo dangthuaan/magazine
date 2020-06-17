@@ -33,16 +33,31 @@
             <!-- Header Top right -->
             <div class="col-lg-6 col-md-6 col-sm-6 col-6 align-right no-padding">
                 <ul>
-                    <li>
-                        <a href="#" data-toggle="modal" data-target="#loginModal">
-                            <span>Login</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-toggle="modal" data-target="#registerModal">
-                            <span>Register</span>
-                        </a>
-                    </li>
+                    @guest
+                        <li>
+                            <a href="{{ route('auth.login') }}">
+                                <span>Login</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('auth.register') }}">
+                                <span>Register</span>
+                            </a>
+                        </li>
+                    @endguest
+
+                    @auth
+                        <li>
+                            <a href="{{ route('admin.index') }}">
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('auth.logout') }}">
+                                <span>Logout</span>
+                            </a>
+                        </li>
+                    @endauth
                 </ul>
             </div>
             <!-- End Header Top right-->

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Repositories\User;
 
-use App\Contracts\UserInterface;
 use App\Mail\ResetPassword;
 use App\Mail\VerifyEmail;
 use App\Models\User;
+use App\Repositories\Base\BaseRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
@@ -73,7 +73,7 @@ class UserRepository extends BaseRepository implements UserInterface
     public function sendVerifyEmail($user)
     {
         try {
-            Mail::to($user)->send(new VerifyEmail($user->username, Str::random(60)));
+            Mail::to($user)->send(new VerifyEmail($user->id, Str::random(60)));
 
         } catch (Throwable $th) {
             Log::error($th);
@@ -171,7 +171,7 @@ class UserRepository extends BaseRepository implements UserInterface
     }
 
     /**
-     * Create Password Reset Token
+     * Check for valid email
      * @param $email
      * @return bool
      */
@@ -212,7 +212,7 @@ class UserRepository extends BaseRepository implements UserInterface
     }
 
     /**
-     * Create Password Reset Token
+     * Send Reset Password Email
      * @param $email
      * @return bool
      */
@@ -237,7 +237,7 @@ class UserRepository extends BaseRepository implements UserInterface
     }
 
     /**
-     * Check Reset Password Token
+     * Check Reset Password Token is expired or not
      *
      * @param $token
      * @return bool
@@ -261,7 +261,7 @@ class UserRepository extends BaseRepository implements UserInterface
     }
 
     /**
-     * Check Reset Password Token
+     * Get resources with token
      *
      * @param $token
      * @return Model|Builder|object
@@ -272,7 +272,7 @@ class UserRepository extends BaseRepository implements UserInterface
     }
 
     /**
-     * Check Reset Password Token
+     * Reset Password
      *
      * @param $token
      * @param $password
