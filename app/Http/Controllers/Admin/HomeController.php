@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
     /**
      * Display Admin Home page.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -20,7 +22,7 @@ class HomeController extends Controller
     /**
      * Login.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function login()
     {
@@ -30,7 +32,7 @@ class HomeController extends Controller
     /**
      * Register.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function register()
     {
@@ -40,7 +42,7 @@ class HomeController extends Controller
     /**
      * Forgot.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function forgot()
     {

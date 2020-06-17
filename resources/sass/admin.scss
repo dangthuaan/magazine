@@ -119,3 +119,14 @@ table.set-role .kt-checkbox.kt-checkbox--brand > span:after {
 table.set-role tbody th {
     font-weight: 500;
 }
+
+.kt-avatar__holder {
+    background-position: center;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.kt-widget.kt-widget--user-profile-1 .kt-widget__head .kt-widget__media img {
+    width: 74px;
+    height: 74px;
+}
