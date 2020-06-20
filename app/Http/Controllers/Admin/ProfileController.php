@@ -34,11 +34,14 @@ class ProfileController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param $username
      * @return Application|Factory|View
      */
-    public function overview()
+    public function overview($username)
     {
-        return view('admin.profile.overview');
+        $user = $this->profile->find($username, 'username');
+
+        return view('admin.profile.overview', compact('user'));
     }
 
     /**
@@ -48,7 +51,7 @@ class ProfileController extends Controller
      */
     public function password()
     {
-        return view('admin.profile.password');
+        return view('admin.profile.password', ['user' => Auth::user()]);
     }
 
     /**

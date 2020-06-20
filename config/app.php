@@ -164,6 +164,7 @@ return [
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         App\Providers\UserServiceProvider::class,
         App\Providers\ProfileServiceProvider::class,
+        App\Providers\CategoryServiceProvider::class,
 
         /*
          * Package Service Providers...

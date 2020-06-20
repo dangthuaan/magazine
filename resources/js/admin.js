@@ -42,13 +42,14 @@ $(document).ready(function () {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                // $('.post-cover-preview').attr('src', e.target.result);
-                document.body.style.backgroundImage = 'url(' + e.target.result + ')';
+                $('.post-cover-preview').attr('src', e.target.result);
+                // document.body.style.backgroundImage = 'url(' + e.target.result + ')';
             }
 
             reader.readAsDataURL(input.files[0]); // convert to base64 string
         }
     }
+
 
     $(document).on('change', "#postCoverFile", function () {
         $('.post-cover-wrapper').html('');
@@ -64,4 +65,12 @@ $(document).ready(function () {
         $('.remove-post-cover').hide();
         $('.post-cover-label').text('Choose file');
     });
-})
+
+    $(document).on('click', '#newCategoryModal button[type=submit]', function (e) {
+        $('#newCategoryModalForm').submit();
+    });
+
+    $(document).on('click', '#editCategoryModal button[type=submit]', function (e) {
+        $('#editCategoryModalForm').submit();
+    });
+});

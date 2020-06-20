@@ -14,13 +14,13 @@
             <div class="kt-widget kt-widget--user-profile-1">
                 <div class="kt-widget__head">
                     <div class="kt-widget__media">
-                        <img src="{{ getUserAvatar(Auth::id(), Auth::user()->avatar) }}"
-                             alt="{{ Auth::user()->full_name }}">
+                        <img src="{{ getUserAvatar($user->id, $user->avatar) }}"
+                             alt="{{ $user->full_name }}">
                     </div>
                     <div class="kt-widget__content">
                         <div class="kt-widget__section">
                             <a href="#" class="kt-widget__username">
-                                {{ Auth::user()->full_name }}
+                                {{ $user->full_name }}
                                 <i class="flaticon2-correct kt-font-success"></i>
                             </a>
                             <span class="kt-widget__subtitle">
@@ -31,29 +31,30 @@
                 </div>
                 <div class="kt-widget__body">
                     <div class="kt-widget__content">
-                        @if (Auth::user()->email)
+                        @if ($user->email)
                             <div class="kt-widget__info">
                                 <span class="kt-widget__label">Email:</span>
-                                <a href="#" class="kt-widget__data">{{ Auth::user()->email }}</a>
+                                <a href="#" class="kt-widget__data">{{ $user->email }}</a>
                             </div>
                         @endif
 
-                        @if (Auth::user()->phone)
+                        @if ($user->phone)
                             <div class="kt-widget__info">
                                 <span class="kt-widget__label">Phone:</span>
-                                <a href="#" class="kt-widget__data">{{ Auth::user()->phone }}</a>
+                                <a href="#" class="kt-widget__data">{{ $user->phone }}</a>
                             </div>
                         @endif
 
-                        @if (Auth::user()->location)
+                        @if ($user->location)
                             <div class="kt-widget__info">
                                 <span class="kt-widget__label">Location:</span>
-                                <span class="kt-widget__data">{{ Auth::user()->location }}</span>
+                                <span class="kt-widget__data">{{ $user->location }}</span>
                             </div>
                         @endif
                     </div>
                     <div class="kt-widget__items">
-                        <a href="{{ route('admin.profile.overview') }}" class="kt-widget__item personal_info">
+                        <a href="{{ route('admin.profile.overview', $user->username) }}"
+                           class="kt-widget__item personal_info">
                             <span class="kt-widget__section">
                                 <span class="kt-widget__icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
@@ -74,7 +75,8 @@
                             </span>
                         </a>
 
-                        <a href="{{ route('admin.profile.password') }}" class="kt-widget__item change_password">
+                        @if ($user->isCurrentUser())
+                            <a href="{{ route('admin.profile.password') }}" class="kt-widget__item change_password">
                             <span class="kt-widget__section">
                                 <span class="kt-widget__icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
@@ -96,7 +98,8 @@
                                     Change Password
                                 </span>
                             </span>
-                        </a>
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>

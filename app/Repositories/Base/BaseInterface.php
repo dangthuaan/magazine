@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Base;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 
 interface BaseInterface
@@ -23,6 +25,15 @@ interface BaseInterface
     public function find($data, $attribute = 'id');
 
     /**
+     * Find a resource.
+     *
+     * @param $data
+     * @param string $attribute
+     * @return Collection|Model[]
+     */
+    public function findAll($data, $attribute = 'id');
+
+    /**
      * Create new resource.
      *
      * @param array $data
@@ -41,6 +52,16 @@ interface BaseInterface
     public function update($id, $data, $attribute = 'id');
 
     /**
+     * Update resources.
+     *
+     * @param $ids
+     * @param array $data
+     * @param String $attribute
+     * @return Response
+     */
+    public function updateMany($ids, $data, $attribute = 'id');
+
+    /**
      * Delete a specific resource.
      *
      * @param Int $id
@@ -57,4 +78,22 @@ interface BaseInterface
      * @return Boolean
      */
     public function session($request, $key, $value);
+
+    /**
+     * List all resources with specific order and pagination.
+     *
+     * @param $order
+     * @param $pagination
+     * @return Response
+     */
+    public function list($order, $pagination);
+
+    /**
+     * Search.
+     *
+     * @param $string
+     * @param $columns
+     * @return void
+     */
+    public function search($string, $columns);
 }

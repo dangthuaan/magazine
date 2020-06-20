@@ -100,4 +100,20 @@ interface UserInterface extends BaseInterface
      * @return bool
      */
     public function resetPassword($token, $password);
+
+    /**
+     * Block user
+     *
+     * @param $id
+     * @return bool
+     */
+    public function block($id);
+
+    /**
+     * Unblock user
+     *
+     * @param $id
+     * @return bool
+     */
+    public function unblock($id);
 }

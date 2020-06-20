@@ -17,7 +17,7 @@ class Category extends Model
      */
     public function parent()
     {
-        return $this->belongsTo('App\Models\Category');
+        return $this->belongsTo('App\Models\Category', 'parent_id');
     }
 
     /**
@@ -25,7 +25,7 @@ class Category extends Model
      */
     public function childs()
     {
-        return $this->hasMany('App\Models\Category');
+        return $this->hasMany('App\Models\Category', 'parent_id');
     }
 
     /**
@@ -34,5 +34,15 @@ class Category extends Model
     public function posts()
     {
         return $this->belongsToMany('App\Models\Post');
+    }
+
+    /**
+     * check if parent category.
+     *
+     * @return boolean
+     */
+    public function isParent()
+    {
+        return is_null($this->parent_id);
     }
 }
