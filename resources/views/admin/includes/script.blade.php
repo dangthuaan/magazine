@@ -138,3 +138,37 @@
 <script src="{{ asset('js/alerts.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/admin.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/profile.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/ajax.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/functions.js') }}" type="text/javascript"></script>
+
+<script src="{{ asset('js/category.js') }}" type="text/javascript"></script>
+
+<script>
+    function errorMessage() {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+        }).then(function () {
+            location.reload();
+        });
+    }
+
+    function updateSuccess() {
+        Swal.fire({
+            type: 'success',
+            title: 'Update Success!',
+        }).then(function () {
+            location.reload();
+        });
+    }
+
+    function removeSuccess() {
+        Swal.fire({
+            type: 'success',
+            title: 'Removed!',
+        }).then(function () {
+            location.reload();
+        });
+    }
+</script>

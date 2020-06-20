@@ -3,7 +3,11 @@
 namespace App\Models;
 
 use Eloquent;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * User
@@ -32,6 +36,16 @@ class User extends Authenticatable
     }
 
     /**
+     * check if current user.
+     *
+     * @return bool
+     */
+    public function isCurrentUser()
+    {
+        return $this->id == Auth::id();
+    }
+
+    /**
      * Determine if the user has verified their email address.
      *
      * @return bool
@@ -39,6 +53,17 @@ class User extends Authenticatable
     public function hasVerifiedEmail()
     {
         return !is_null($this->email_verified_at);
+    }
+
+    /**
+     * List users with verified email.
+     *
+     * @param $query
+     * @return bool
+     */
+    public function scopeVerified($query)
+    {
+        return $query->whereNotNull('email_verified_at');
     }
 
     /**
@@ -52,12 +77,44 @@ class User extends Authenticatable
     }
 
     /**
-     * Determine if the user has verified their email address.
+     * Get full name.
      *
      * @return string
      */
     public function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    /**
+     * Scope order by desc.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeOrderByDesc($query)
+    {
+        return $query->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get formatted joined date.
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function joined()
+    {
+        return Carbon::parse($this->email_verified_at)->format('d-m-Y');
+    }
+
+    /**
+     * Check is blocked or not.
+     *
+     * @return boolean
+     */
+    public function isBlocked()
+    {
+        return $this->is_block;
     }
 }

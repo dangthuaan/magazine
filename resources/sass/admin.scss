@@ -68,6 +68,25 @@
     z-index: 1000;
 }
 
+#dom-disabled {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: block;
+    background-color: transparent;
+    z-index: 999;
+    text-align: center;
+}
+
+#ajax-loading {
+    text-align: center;
+}
+
+#ajax-loading-image {
+    width: 50px;
+    height: auto;
+}
+
 .post-cover-wrapper img {
     padding-top: 20px;
 }
@@ -129,4 +148,12 @@ table.set-role tbody th {
 .kt-widget.kt-widget--user-profile-1 .kt-widget__head .kt-widget__media img {
     width: 74px;
     height: 74px;
+}
+
+.transition {
+    transition: all 0.3s ease 0s;
+}
+
+#kt_table thead th:first-child:before, #kt_table thead th:first-child:after {
+    display: none !important;
 }

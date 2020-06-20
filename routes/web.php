@@ -36,7 +36,7 @@ Route::middleware('guest')
         Route::post('register', 'RegisterController@store')->name('register.store');
 
         //verify registered account
-        Route::middleware('verified')->group(function () {
+        Route::middleware('verified.redirect')->group(function () {
             Route::get('register/{id}/verification',
                 'Verification\VerificationController@index')->name('register.verify.index');
 
@@ -75,17 +75,51 @@ Route::middleware(['auth', 'verified'])
     ->prefix('admin')
     ->group(function () {
         Route::get('/', 'HomeController@index')->name('index');
+
+        //users
         Route::get('/users', 'UserController@list')->name('users.list');
+
+        //block user
+        Route::post('/users/block', 'UserController@block')->name('users.block');
+
+        //unblock user
+        Route::post('/users/unblock', 'UserController@unblock')->name('users.unblock');
+
+        //search user
+        Route::get('/users/search', 'UserController@search')->name('users.search');
+
         Route::get('/groups', 'UserController@group')->name('users.group');
+
+        //posts
         Route::get('/posts', 'PostController@list')->name('posts.list');
+
+        //new post
+        Route::post('/posts', 'PostController@store')->name('posts.store');
+
+        //categories
         Route::get('/categories', 'CategoryController@list')->name('categories.list');
 
-        //update user profile
-        Route::get('/profile', 'ProfileController@overview')->name('profile.overview');
-        Route::post('/profile', 'ProfileController@update')->name('profile.update');
+        //new categories
+        Route::post('/categories', 'CategoryController@store')->name('categories.store');
 
+        //show category
+        Route::get('/categories/{id}', 'CategoryController@show')->name('categories.show');
+
+        //update category
+        Route::put('/categories/{id}', 'CategoryController@update')->name('categories.update');
+
+        //remove category
+        Route::delete('/categories/{id}', 'CategoryController@destroy')->name('categories.destroy');
+
+        //update user profile
+        //update password
         Route::get('/profile/password', 'ProfileController@password')->name('profile.password');
         Route::post('/profile/password', 'ProfileController@updatePassword')->name('profile.password.update');
+
+        //update information
+        Route::get('/profile/{username}', 'ProfileController@overview')->name('profile.overview');
+        Route::post('/profile', 'ProfileController@update')->name('profile.update');
+
     });
 
 Route::get('/clear-cache', function () {

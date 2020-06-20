@@ -294,4 +294,44 @@ class UserRepository extends BaseRepository implements UserInterface
 
         return true;
     }
+
+    /**
+     * Block user
+     *
+     * @param $id
+     * @return bool
+     */
+    public function block($id)
+    {
+        try {
+            $this->update($id, ['is_block' => true]);
+
+        } catch (Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Unblock user
+     *
+     * @param $id
+     * @return bool
+     */
+    public function unblock($id)
+    {
+        try {
+            $this->update($id, ['is_block' => false]);
+
+        } catch (Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
 }
