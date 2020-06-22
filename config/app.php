@@ -165,6 +165,8 @@ return [
         App\Providers\UserServiceProvider::class,
         App\Providers\ProfileServiceProvider::class,
         App\Providers\CategoryServiceProvider::class,
+        App\Providers\PostServiceProvider::class,
+        App\Providers\CommentServiceProvider::class,
 
         /*
          * Package Service Providers...

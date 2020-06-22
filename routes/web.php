@@ -64,9 +64,9 @@ Route::middleware('verified')
 
         Route::get('/posts', 'PostController@index')->name('posts.index');
 
-        Route::get('/post', function () {
-            return view('client.post.index');
-        })->name('post.index');
+        Route::get('/post/{id}', 'PostController@show')->name('posts.show');
+
+        Route::post('/post/{id}/store-comment', 'CommentController@store')->name('comments.store');
     });
 
 Route::middleware(['auth', 'verified'])
@@ -96,6 +96,21 @@ Route::middleware(['auth', 'verified'])
         //new post
         Route::post('/posts', 'PostController@store')->name('posts.store');
 
+        //search post
+        Route::get('/posts/search', 'PostController@search')->name('posts.search');
+
+        //show post
+        Route::get('/posts/{id}', 'PostController@show')->name('posts.show');
+
+        //update post
+        Route::post('/posts/{id}', 'PostController@update')->name('posts.update');
+
+        //remove post
+        Route::post('/posts/{id}/remove', 'PostController@destroy')->name('posts.destroy');
+
+        //restore post
+        Route::post('/posts/{id}/remove/restore', 'PostController@restore')->name('posts.restore');
+
         //categories
         Route::get('/categories', 'CategoryController@list')->name('categories.list');
 
@@ -106,7 +121,7 @@ Route::middleware(['auth', 'verified'])
         Route::get('/categories/{id}', 'CategoryController@show')->name('categories.show');
 
         //update category
-        Route::put('/categories/{id}', 'CategoryController@update')->name('categories.update');
+        Route::post('/categories/{id}', 'CategoryController@update')->name('categories.update');
 
         //remove category
         Route::delete('/categories/{id}', 'CategoryController@destroy')->name('categories.destroy');

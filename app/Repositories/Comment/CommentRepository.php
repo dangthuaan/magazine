@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Repositories\Category;
+namespace App\Repositories\Comment;
 
-use App\Models\Category;
+use App\Models\Comment;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class CategoryRepository extends BaseRepository implements CategoryInterface
+class CommentRepository extends BaseRepository implements CommentInterface
 {
     /**
      * @var Model
@@ -18,15 +18,15 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
     /**
      * Base Constructor
      *
-     * @param Category $model
+     * @param Comment $model
      */
-    public function __construct(Category $model)
+    public function __construct(Comment $model)
     {
         parent::__construct($model);
     }
 
     /**
-     * Store new category.
+     * Store new comment.
      *
      * @param $data
      * @return bool
@@ -49,7 +49,7 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
     }
 
     /**
-     * Update category.
+     * Update comment.
      *
      * @param $id
      * @param $data
@@ -71,7 +71,7 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
     }
 
     /**
-     * Destroy category.
+     * Destroy comment.
      *
      * @param $id
      * @return bool

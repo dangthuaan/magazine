@@ -71,6 +71,12 @@ return [
             'visibility' => 'public',
         ],
 
+        'cover' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/images/post/cover'),
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*

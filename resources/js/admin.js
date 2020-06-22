@@ -52,18 +52,21 @@ $(document).ready(function () {
 
 
     $(document).on('change', "#postCoverFile", function () {
-        $('.post-cover-wrapper').html('');
-        $('.post-cover-wrapper').append("<img class='post-cover-preview' src='' alt='cover preview' />");
+        var wrapper = $('.post-cover-wrapper');
+
+        wrapper.html('');
+        wrapper.append("<img class='post-cover-preview' src='' alt='cover preview' />");
         readURL(this);
         $('.remove-post-cover').show();
     });
 
-    //remove cover
-    $(document).on('click', '.remove-post-cover button', function () {
-        $('#postCoverFile').val('');
-        $('.post-cover-wrapper').html('');
-        $('.remove-post-cover').hide();
-        $('.post-cover-label').text('Choose file');
+    $(document).on('change', "#editPostCoverFile", function () {
+        var wrapper = $('.edit-post-cover-wrapper');
+
+        wrapper.html('');
+        wrapper.append("<img class='post-cover-preview' src='' alt='cover preview' />");
+        readURL(this);
+        $('.remove-post-cover.edit').show();
     });
 
     $(document).on('click', '#newCategoryModal button[type=submit]', function (e) {

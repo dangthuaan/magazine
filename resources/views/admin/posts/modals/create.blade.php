@@ -10,7 +10,8 @@
             </div>
             <div class="modal-body">
                 <!--begin::Form-->
-                <form method="POST" action="{{ route('admin.posts.store') }}" class="kt-form">
+                <form method="POST" action="{{ route('admin.posts.store') }}" class="kt-form" id="newPostModalForm"
+                      enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label>Cover</label>
@@ -28,10 +29,9 @@
                         @enderror
 
                         <div class="post-cover-wrapper">
-                            <img class="post-cover-preview" src="{{ asset('storage/images/post/cover1.jpg') }}"
-                                 alt="cover preview"/>
+
                         </div>
-                        <div class="remove-post-cover">
+                        <div class="remove-post-cover" style="display: none">
                             <button type="button" class="btn btn-danger btn-sm">Remove Cover</button>
                         </div>
                     </div>
@@ -47,21 +47,39 @@
 
                     </div>
                     <div class="form-group">
-                        <label for="exampleSelect1">Choose Category</label>
-                        <select class="form-control" id="exampleSelect1">
-                            <option disabled="" selected="">
-                                Select Category
-                            </option>
-                            <option>Food Habit</option>
-                            <option>Science</option>
-                            <option>Lifestyle</option>
-                            <option>Travel</option>
-                        </select>
+                        <label for="postCategories">Choose Category</label>
+                        <div class="kt-checkbox-list">
+                            @foreach ($categories as $selectCategory)
+                                @if ($selectCategory->isParent())
+                                    <div class="kt-margin-b-10">
+                                        <label class="kt-checkbox kt-checkbox--solid">
+                                            <input type="checkbox" value="{{ $selectCategory->id }}"
+                                                   name="categories[]"><strong>{{ $selectCategory->name }}</strong>
+                                            <span></span>
+                                        </label>
+
+                                        @if ($selectCategory->childs()->count() > 0)
+                                            @foreach ($selectCategory->childs as $child)
+                                                <div class="row kt-margin-l-5">
+                                                    <span>--&nbsp;</span>
+                                                    <label class="kt-checkbox kt-checkbox--solid">
+                                                        <input type="checkbox" value="{{ $child->id }}"
+                                                               name="categories[]">{{ $child->name }}
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
                         <span class="form-text text-muted">Default category: Uncategorized</span>
                     </div>
                     <div class="form-group form-group-last">
                         <label for="exampleTextarea">Content <span style="color: #f6214b;">*</span></label>
-                        <div class="summernote summernote_post_content"></div>
+                        <textarea class="summernote summernote_post_content"
+                                  name="content">{{ old('content') }}</textarea>
                     </div>
                 </form>
 
@@ -69,10 +87,20 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Create</button>
             </div>
         </div>
     </div>
 </div>
 
 <!--end::Modal-->
+
+@if ($errors->any())
+@section('js')
+    <script>
+        $(document).ready(function () {
+            $('#newPostModal').modal('show');
+        });
+    </script>
+@endsection
+@endif

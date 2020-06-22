@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Base;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
@@ -19,19 +20,31 @@ interface BaseInterface
      * Find a resource.
      *
      * @param $data
-     * @param string $attribute
-     * @return Response
-     */
-    public function find($data, $attribute = 'id');
-
-    /**
-     * Find a resource.
-     *
-     * @param $data
+     * @param string $operator
      * @param string $attribute
      * @return Collection|Model[]
      */
-    public function findAll($data, $attribute = 'id');
+    public function find($data, $operator = '=', $attribute = 'id');
+
+    /**
+     * Find a resource with eager relations.
+     *
+     * @param $relations
+     * @param $data
+     * @param string $attribute
+     * @return Builder|Model|object
+     */
+    public function findWith($relations, $data, $attribute = 'id');
+
+    /**
+     * Find all resource.
+     *
+     * @param $data
+     * @param string $operator
+     * @param string $attribute
+     * @return Collection|Model[]
+     */
+    public function findAll($data, $operator = '=', $attribute = 'id');
 
     /**
      * Create new resource.
@@ -82,18 +95,30 @@ interface BaseInterface
     /**
      * List all resources with specific order and pagination.
      *
+     * @param $relations
      * @param $order
-     * @param $pagination
+     * @param $pages
      * @return Response
      */
-    public function list($order, $pagination);
+    public function list($relations, $order, $pages);
 
     /**
      * Search.
      *
      * @param $string
      * @param $columns
+     * @param array $relations
      * @return void
      */
-    public function search($string, $columns);
+    public function search($string, $columns, $relations = []);
+
+    /**
+     * Store a file in disk.
+     *
+     * @param $userId
+     * @param $file
+     * @param $disk
+     * @return string
+     */
+    public function file($userId, $file, $disk);
 }

@@ -2,12 +2,16 @@
 
 namespace App\Repositories\Base;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 
 class BaseRepository implements BaseInterface
 {
+    protected $relations = [];
+
     /**
      * @var Model
      */
@@ -26,34 +30,55 @@ class BaseRepository implements BaseInterface
     /**
      * Get all resources.
      *
+     * @param array $relations
      * @return Collection|Model[]
      */
-    public function all()
+    public function all($relations = [])
     {
-        return $this->model->all();
-    }
-
-    /**
-     * Find a resource.
-     *
-     * @param string $attribute
-     * @return Collection|Model[]
-     */
-    public function find($data, $attribute = 'id')
-    {
-        return $this->model->where($attribute, '=', $data)->first();
+        if ($this->model instanceof Builder) {
+            return $this->model->get();
+        } else {
+            return $this->model->all();
+        }
     }
 
     /**
      * Find a resource.
      *
      * @param $data
+     * @param string $operator
      * @param string $attribute
      * @return Collection|Model[]
      */
-    public function findAll($data, $attribute = 'id')
+    public function find($data, $operator = '=', $attribute = 'id')
     {
-        return $this->model->where($attribute, '=', $data)->get();
+        return $this->model->where($attribute, $operator, $data)->first();
+    }
+
+    /**
+     * Find a resource with eager relations.
+     *
+     * @param $relations
+     * @param $data
+     * @param string $attribute
+     * @return Builder|Model|object
+     */
+    public function findWith($relations, $data, $attribute = 'id')
+    {
+        return $this->model->with($relations)->where($attribute, '=', $data)->first();
+    }
+
+    /**
+     * Find all resource.
+     *
+     * @param $data
+     * @param string $operator
+     * @param string $attribute
+     * @return Collection|Model[]
+     */
+    public function findAll($data, $operator = '=', $attribute = 'id')
+    {
+        return $this->model->where($attribute, $operator, $data)->get();
     }
 
     /**
@@ -120,17 +145,18 @@ class BaseRepository implements BaseInterface
     /**
      * List all resources with specific order and pagination.
      *
+     * @param $relations
      * @param $order
      * @param $pages
-     * @return Response
+     * @return LengthAwarePaginator
      */
-    public function list($order, $pages)
+    public function list($relations, $order, $pages)
     {
         if ($order === 'desc') {
-            return $this->model->orderByDesc()->paginate($pages);
+            return $this->model->with($relations)->orderByDesc()->paginate($pages);
 
         } elseif ($order === 'asc') {
-            return $this->model->orderByAsc()->paginate($pages);
+            return $this->model->with($relations)->orderByAsc()->paginate($pages);
 
         } else {
             return false;
@@ -142,14 +168,42 @@ class BaseRepository implements BaseInterface
      *
      * @param $string
      * @param $columns
+     * @param array $relations
      * @return void
      */
-    public function search($string, $columns)
+    public function search($string, $columns, $relations = [])
     {
         return $this->model->where(function ($query) use ($columns, $string) {
             foreach ($columns as $column) {
                 $query->orWhere($column, 'LIKE', '%' . $string . '%');
             }
+        })->orWhere(function ($query) use ($relations, $string) {
+            foreach ($relations as $relation) {
+                $query->whereHas($relation, function ($subQuery) use ($relation, $string) {
+                    $subQuery->where('name', 'LIKE', '%' . $string . '%');
+                });
+            }
         })->get();
+    }
+
+    /**
+     * Store a file in disk.
+     *
+     * @param $userId
+     * @param $file
+     * @param $disk
+     * @return string
+     */
+    public function file($userId, $file, $disk)
+    {
+        $fileName = $userId . '_' . $file->getClientOriginalName();
+
+        $storeFile = $file->storeAs('/' . $userId, $fileName, $disk);
+
+        if (!$storeFile) {
+            return false;
+        }
+
+        return $fileName;
     }
 }

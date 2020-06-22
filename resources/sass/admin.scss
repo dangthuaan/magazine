@@ -91,6 +91,10 @@
     padding-top: 20px;
 }
 
+.edit-post-cover-wrapper img {
+    padding-top: 20px;
+}
+
 .post-cover-preview {
     display: block;
     margin-left: auto;
@@ -104,7 +108,7 @@
 }
 
 .kt-portlet__head-actions .add-new {
-    margin-top: -2px;
+    margin-bottom: 2.5px;
 }
 
 .search-form button i {
@@ -156,4 +160,18 @@ table.set-role tbody th {
 
 #kt_table thead th:first-child:before, #kt_table thead th:first-child:after {
     display: none !important;
+}
+
+.kt-notes .kt-notes__items .kt-notes__item .kt-notes__media {
+    top: 10px;
+}
+
+.kt-notes .kt-notes__items .kt-notes__item .kt-notes__media img {
+    border-radius: 0;
+}
+
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

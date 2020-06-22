@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'expire_time' => 1
+    'expire_time' => 525600
 ];

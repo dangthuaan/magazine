@@ -36,7 +36,7 @@
                     <div class="form-group form-group-last">
                         <label for="exampleTextarea">Description</label>
                         <textarea class="form-control" id="exampleTextarea"
-                                  name="description" rows="3">{{ $category->description }}</textarea>
+                                  name="description" rows="3"></textarea>
 
                         <span class="invalid-feedback description" role="alert">
                             <strong></strong>
