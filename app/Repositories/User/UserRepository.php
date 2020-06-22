@@ -112,7 +112,7 @@ class UserRepository extends BaseRepository implements UserInterface
      */
     public function checkVerifiedUser($username)
     {
-        $user = $this->find($username, 'username');
+        $user = $this->find($username, '=', 'username');
 
         if (is_null($user->email_verified_at)) {
             return false;

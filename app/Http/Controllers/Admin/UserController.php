@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function list()
     {
-        $users = $this->user->list('desc', 10);
+        $users = $this->user->list([], 'desc', 10);
 
         if (!$users) {
             return view('admin.users.list', ['failed' => true]);

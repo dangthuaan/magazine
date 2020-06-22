@@ -45,4 +45,15 @@ class Category extends Model
     {
         return is_null($this->parent_id);
     }
+
+    /**
+     * check if category is category of specific post.
+     *
+     * @param $post
+     * @return boolean
+     */
+    public function isPostCategories($post)
+    {
+        return in_array($this->id, $post->categories->pluck('id')->all());
+    }
 }

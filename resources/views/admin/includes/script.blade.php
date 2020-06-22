@@ -142,6 +142,7 @@
 <script src="{{ asset('js/functions.js') }}" type="text/javascript"></script>
 
 <script src="{{ asset('js/category.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/post.js') }}" type="text/javascript"></script>
 
 <script>
     function errorMessage() {
@@ -167,6 +168,15 @@
         Swal.fire({
             type: 'success',
             title: 'Removed!',
+        }).then(function () {
+            location.reload();
+        });
+    }
+
+    function restoreSuccess() {
+        Swal.fire({
+            type: 'success',
+            title: 'Post has been restored!',
         }).then(function () {
             location.reload();
         });

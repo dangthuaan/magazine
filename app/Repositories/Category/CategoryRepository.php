@@ -71,7 +71,7 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
     }
 
     /**
-     * Update category.
+     * Destroy category.
      *
      * @param $id
      * @return bool

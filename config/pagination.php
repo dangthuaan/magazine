@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'users' => 10
+    'users' => 10,
+    'posts' => 10,
 ];

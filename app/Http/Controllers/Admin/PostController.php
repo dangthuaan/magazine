@@ -3,73 +3,175 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostRequest;
+use App\Repositories\Category\CategoryInterface;
+use App\Repositories\Post\PostInterface;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Throwable;
 
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @var Model Category
+     */
+    protected $category;
+
+    /**
+     * @var Model Post
+     */
+    protected $post;
+
+    /**
+     * Register Category and Post Constructor
      *
-     * @return \Illuminate\Http\Response
+     * @param CategoryInterface $category
+     * @param PostInterface $post
+     */
+    public function __construct(CategoryInterface $category, PostInterface $post)
+    {
+        $this->category = $category;
+        $this->post = $post;
+    }
+
+    /**
+     * Display all posts.
+     *
+     * @return Application|Factory|View
      */
     public function list()
     {
-        return view('admin.posts.list');
+        $posts = $this->post->list(['user', 'categories'], 'desc', config('pagination.posts'));
+
+        $categories = $this->category->all();
+
+        return view('admin.posts.list', compact('posts', 'categories'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a new post.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param PostRequest $request
+     * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        dd('ok');
+        $newPost = $this->post->new(Auth::id(), $request->except('_token'), true);
+
+        $newCategoryPost = $this->post->attachCategory($newPost, $request->categories);
+
+        if (!$newPost || !$newCategoryPost) {
+            return back()->with('error', 'Something went wrong!');
+        }
+
+        return back()->with('success', 'Success! New Post has been created.');
     }
 
     /**
-     * Display the specified resource.
+     * Display specific post.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return JsonResponse
+     * @throws Throwable
      */
     public function show($id)
     {
-        //
+        $post = $this->post->findWith('categories', $id);
+
+        $categories = $this->category->findAll(null, 'parent_id');
+
+        if (!$post) {
+            return response()->json([
+                'status' => false,
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'html' => view('admin.posts.modals.edit_form', compact('post', 'categories'))->render()
+        ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update specific post.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param PostRequest $request
+     * @param $id
+     * @return JsonResponse
      */
-    public function edit($id)
+    public function update(PostRequest $request, $id)
     {
-        //
+        $updatePost = $this->post->edit(Auth::id(), $id, $request->only('cover', 'title', 'content'),
+            true);
+
+        $updateCategoryPost = $this->post->syncCategory($this->post->find($id), $request->categories);
+
+        if (!$updatePost || !$updateCategoryPost) {
+            return response()->json([
+                'status' => false
+            ]);
+        }
+
+        return response()->json([
+            'status' => true
+        ]);
+
     }
 
     /**
-     * Update the specified resource in storage.
+     * Remove specific post.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
+        $remove = $this->post->destroy($id);
+
+        return response()->json([
+            'status' => $remove
+        ]);
+    }
+
+    /**
+     * Restore removed post.
+     *
+     * @param $id
+     * @return JsonResponse
+     */
+    public function restore($id)
+    {
+        $restorePost = $this->post->restore($id);
+
+        return response()->json([
+            'status' => $restorePost
+        ]);
+    }
+
+    /**
+     * Search.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function search(Request $request)
+    {
+        $postResult = $this->post->search($request->search,
+            ['title', 'content'], ['categories']);
+
+        $categories = $this->category->all();
+
+        if (!$postResult) {
+            return back()->with('error', 'Something went wrong!');
+        }
+
+        return view('admin.posts.list', ['posts' => $postResult, 'categories' => $categories]);
+
     }
 }

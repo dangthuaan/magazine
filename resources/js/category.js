@@ -58,7 +58,7 @@ $(document).ready(function () {
 
         $.ajax({
             url: url,
-            type: 'PUT',
+            type: 'POST',
             data: data,
             cache: false,
             success: function (result) {

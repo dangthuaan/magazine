@@ -103,7 +103,6 @@ class CategoryController extends Controller
     /**
      * Remove specific category.
      *
-     * @param CategoryRequest $request
      * @param $id
      * @return JsonResponse
      */
