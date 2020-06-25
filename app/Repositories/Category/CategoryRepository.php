@@ -84,6 +84,8 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
     public function destroy($id)
     {
         try {
+            $this->model->where('parent_id', $id)->delete();
+
             $this->delete($id);
 
         } catch (Throwable $th) {
