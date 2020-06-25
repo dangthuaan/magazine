@@ -68,12 +68,4 @@ $(document).ready(function () {
         readURL(this);
         $('.remove-post-cover.edit').show();
     });
-
-    $(document).on('click', '#newCategoryModal button[type=submit]', function (e) {
-        $('#newCategoryModalForm').submit();
-    });
-
-    $(document).on('click', '#editCategoryModal button[type=submit]', function (e) {
-        $('#editCategoryModalForm').submit();
-    });
 });

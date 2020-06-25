@@ -177,7 +177,7 @@ class UserRepository extends BaseRepository implements UserInterface
      */
     public function checkValidEmail($email)
     {
-        $user = $this->find($email, 'email');
+        $user = $this->find($email, '=', 'email');
 
         if (!$user) {
             return false;
@@ -224,7 +224,7 @@ class UserRepository extends BaseRepository implements UserInterface
         $token = $data->token;
 
         try {
-            $user = $this->find($email, 'email');
+            $user = $this->find($email, '=', 'email');
             Mail::to($user)->send(new ResetPassword($token));
 
         } catch (Throwable $th) {
@@ -283,7 +283,7 @@ class UserRepository extends BaseRepository implements UserInterface
         $data = $this->findDataWithToken($token);
 
         try {
-            $user = $this->find($data->email, 'email');
+            $user = $this->find($data->email, '=', 'email');
             $this->update($user->id, ['password' => Hash::make($password)]);
 
         } catch (Throwable $th) {

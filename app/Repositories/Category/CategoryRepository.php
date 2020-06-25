@@ -29,23 +29,24 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
      * Store new category.
      *
      * @param $data
+     * @param bool $return_object
      * @return bool
      */
-    public function new($data)
+    public function new($data, $return_object = false)
     {
         if ($data['parent_id'] === 'null') {
             $data['parent_id'] = null;
         }
 
         try {
-            $this->create($data);
+            $newCategory = $this->create($data);
         } catch (Throwable $th) {
             Log::error($th);
 
             return false;
         }
 
-        return true;
+        return $return_object ? $newCategory : true;
     }
 
     /**
@@ -58,6 +59,10 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
      */
     public function edit($id, $data)
     {
+        if ($data['parent_id'] === 'null') {
+            unset($data['parent_id']);
+        }
+
         try {
             $this->update($id, $data);
 

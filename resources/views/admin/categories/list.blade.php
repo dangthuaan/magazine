@@ -7,6 +7,13 @@
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">Post Manager > Categories</h3>
             </div>
+
+            <!-- begin:: Ajax Loading mask -->
+            <div id="ajax-loading" style="display: none; margin-bottom: -25px;">
+                <img id="ajax-loading-image" src="{{ asset('storage/images/basic/ajax-page-loader.svg') }}"
+                     alt="Loading..."/>
+            </div>
+            <!-- end:: Ajax Loading mask -->
         </div>
         <!-- end:: Content Head -->
 
@@ -53,28 +60,9 @@
                         <div class="kt-portlet__body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <div id="kt_tree_2" class="tree-demo">
-                                        <ul>
-                                            @foreach($categories as $category)
-                                                @if ($category->isParent())
-                                                    <li>
-                                                        {{ $category->name }}
-                                                        @include('admin.categories.controls')
-                                                        @if ($category->childs()->count() > 0)
-                                                            <ul>
-                                                                @foreach ($category->childs as $child)
-                                                                    <li>
-                                                                        {{ $child->name }}
-                                                                        @include('admin.categories.controls', ['category' => $child])
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        @endif
-                                                    </li>
-                                                @endif
-                                            @endforeach
-                                        </ul>
-                                    </div>
+                                    <ul class="list-group all-categories">
+                                        @include('admin.categories.body')
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -100,30 +88,11 @@
 
     <!--end::Page Vendors Styles -->
     <style>
-        .jstree-container-ul.jstree-children {
-            font-size: 2rem;
+        .operator {
+            float: right;
+            padding: 0 10px;
         }
 
-        .jstree-default .jstree-anchor {
-            margin-bottom: 20px;
-        }
-
-        .jstree-default .jstree-icon.fa {
-            font-size: 1.8rem !important;
-        }
-
-        i.jstree-icon.jstree-themeicon {
-            margin-right: 5px;
-        }
-
-        #kt_tree_2 li i {
-            color: #5d78ff !important;
-        }
-
-        .jstree-default .jstree-hovered,
-        .jstree-default .jstree-clicked {
-            background-color: transparent !important;
-        }
     </style>
 @endsection
 
@@ -144,4 +113,6 @@
         $('.kt-menu__item.kt-menu__item--submenu.post-manager').addClass('kt-menu__item--open');
         $('.kt-menu__item.categories').addClass('kt-menu__item--active');
     </script>
+
+    @include('admin.categories.js')
 @endsection

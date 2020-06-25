@@ -58,6 +58,10 @@ class PostController extends Controller
 
         $next = $this->post->findAll($id, '>')->min('id');
 
+        if (!$post) {
+            return view('errors.404');
+        }
+
         return view('client.posts.single.index', compact('post', 'previous', 'next'));
     }
 }

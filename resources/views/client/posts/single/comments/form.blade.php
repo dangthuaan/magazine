@@ -1,9 +1,9 @@
 <div class="comment-form-wrapper padding-bottom-60">
     <h4>Post Comment</h4>
-    <form method="POST" action="{{ route('client.comments.store', $post->id) }}">
+    <form method="POST">
         @csrf
         <div class="form-group">
-            <textarea class="form-control margin-bottom-10" name="comment" id="comment" rows="5" placeholder="Message"
+            <textarea class="form-control margin-bottom-10" name="content" id="content" rows="5" placeholder="Message"
                       required></textarea>
         </div>
         <div class="avatar">
@@ -14,6 +14,9 @@
             <br>
             <span style="font-size: 0.8em;">{{ Auth::user()->full_name }}</span>
         </div>
-        <button type="submit" class="primary-btn text-uppercase float-right">Post Comment</button>
+        <button type="submit" class="primary-btn text-uppercase float-right" id="new-comment"
+                data-post-id="{{ $post->id }}">
+            Post Comment
+        </button>
     </form>
 </div>

@@ -5,6 +5,7 @@ namespace App\Repositories\Comment;
 use App\Models\Comment;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -28,24 +29,25 @@ class CommentRepository extends BaseRepository implements CommentInterface
     /**
      * Store new comment.
      *
+     * @param $postId
      * @param $data
+     * @param bool $object
      * @return bool
      */
-    public function new($data)
+    public function new($postId, $data, $object = false)
     {
-        if ($data['parent_id'] === 'null') {
-            $data['parent_id'] = null;
-        }
+        $data['post_id'] = $postId;
+        $data['user_id'] = Auth::id();
 
         try {
-            $this->create($data);
+            $newComment = $this->create($data);
         } catch (Throwable $th) {
             Log::error($th);
 
             return false;
         }
 
-        return true;
+        return $object ? $newComment : true;
     }
 
     /**
@@ -76,7 +78,7 @@ class CommentRepository extends BaseRepository implements CommentInterface
      * @param $id
      * @return bool
      */
-    public function destroy($id)
+    public function remove($id)
     {
         try {
             $this->delete($id);

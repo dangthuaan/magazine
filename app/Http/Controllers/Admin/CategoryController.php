@@ -9,7 +9,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -37,7 +36,7 @@ class CategoryController extends Controller
      */
     public function list()
     {
-        $categories = $this->category->all();
+        $categories = $this->category->all(['childs']);
 
         return view('admin.categories.list', compact('categories'));
     }
@@ -46,17 +45,29 @@ class CategoryController extends Controller
      * Store new category.
      *
      * @param CategoryRequest $request
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function store(CategoryRequest $request)
     {
-        $storeCategory = $this->category->new($request->only('name', 'parent_id', 'description'));
+        $newCategory = $this->category->new($request->only('name', 'parent_id', 'description'), true);
 
-        if (!$storeCategory) {
-            return back()->with('error', 'Something went wrong!');
+        if (!$newCategory) {
+            return response()->json([
+                'status' => false
+            ]);
         }
 
-        return back()->with('success', 'Success! New Category has been created.');
+        if (is_null($newCategory->parent_id)) {
+            $html = view('admin.categories.parent', ['category' => $newCategory])->render();
+        } else {
+            $html = view('admin.categories.child', ['category' => $newCategory])->render();
+        }
+
+        return response()->json([
+            'status' => true,
+            'html' => $html,
+            'parentId' => $newCategory->parent_id
+        ]);
     }
 
     /**
@@ -69,7 +80,7 @@ class CategoryController extends Controller
     {
         $category = $this->category->find($id);
 
-        $parentCategories = $this->category->findAll(null, 'parent_id');
+        $parentCategories = $this->category->findAll(null, '=', 'parent_id');
 
         if (!$category) {
             return response()->json([
@@ -95,8 +106,11 @@ class CategoryController extends Controller
     {
         $update = $this->category->edit($id, $request->only('name', 'parent_id', 'description'));
 
+        $categories = $this->category->all(['childs']);
+
         return response()->json([
-            'status' => $update
+            'status' => $update,
+            'html' => view('admin.categories.body', compact('categories'))->render()
         ]);
     }
 

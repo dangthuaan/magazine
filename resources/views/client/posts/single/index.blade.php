@@ -31,12 +31,6 @@
                         @include('client.posts.single.content')
                         <!-- End Single Post block with comments -->
 
-                        @auth
-                            <!-- Comment form -->
-                            @include('client.posts.single.comments.form')
-                            <!-- End Comment form -->
-                            @endauth
-
                         </div>
 
                     </div>
@@ -54,3 +48,12 @@
     </div>
     <!-- End Main -->
 @endsection
+
+@section('css')
+    @include('client.posts.css')
+@endsection
+
+@section('js')
+    @include('client.posts.js')
+@endsection
+

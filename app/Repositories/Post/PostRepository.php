@@ -131,16 +131,25 @@ class PostRepository extends BaseRepository implements PostInterface
     public function edit($userId, $id, $data, $return_object = false)
     {
         try {
-            switch ($data['cover']) {
-                case 'undefined':
-                    unset($data['cover']);
-                    break;
-                case 'null':
-                    $data['cover'] = null;
-                    break;
-                default:
-                    $data['cover'] = $this->file($userId, $data['cover'], 'cover');
+            if (!isset($data['cover'])) {
+
+                switch ($data['old_cover']) {
+                    case "yes":
+                        unset($data['cover']);
+                        break;
+                    case "no":
+                        $data['cover'] = null;
+                        break;
+                    default:
+                        return false;
+                        break;
+                }
+
+            } else {
+                $data['cover'] = $this->file($userId, $data['cover'], 'cover');
             }
+
+            unset($data['old_cover']);
 
             $updatedPost = $this->update($id, $data);
 

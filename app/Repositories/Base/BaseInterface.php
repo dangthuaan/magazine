@@ -107,6 +107,7 @@ interface BaseInterface
      *
      * @param $string
      * @param $columns
+     * @param $pages
      * @param array $relations
      * @return void
      */

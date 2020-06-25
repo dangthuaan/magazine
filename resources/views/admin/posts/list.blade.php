@@ -7,6 +7,13 @@
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">Post Manager > Posts</h3>
             </div>
+
+            <!-- begin:: Ajax Loading mask -->
+            <div id="ajax-loading" style="display: none; margin-bottom: -25px;">
+                <img id="ajax-loading-image" src="{{ asset('storage/images/basic/ajax-page-loader.svg') }}"
+                     alt="Loading..."/>
+            </div>
+            <!-- end:: Ajax Loading mask -->
         </div>
         <!-- end:: Content Head -->
 
@@ -27,19 +34,19 @@
                                 <div class="kt-portlet__head-actions">
 
                                     <form class="kt-form kt-form--label-right search-form" style="display:inline-block;"
-                                          method="GET" action="{{ route('admin.posts.search') }}">
+                                          method="GET">
                                         <div class="input-group">
-                                            <input type="text" name="search" class="form-control"
+                                            <input type="text" name="search" class="form-control" id="search-post-input"
                                                    placeholder="Search for...">
                                             <div class="input-group-append">
-                                                <button class="btn btn-primary" type="submit"><i
+                                                <button class="btn btn-primary" id="search-user" type="submit"><i
                                                         class="la la-search"></i></button>
                                             </div>
                                         </div>
                                     </form>
 
                                     &nbsp;
-                                    <a href="javascript:;" class="btn btn-brand add-new btn-elevate btn-icon-sm"
+                                    <a href="#" class="btn btn-brand add-new btn-elevate btn-icon-sm"
                                        data-toggle="modal" data-target="#newPostModal">
                                         <i class="la la-plus"></i>
                                         New Post
@@ -66,62 +73,12 @@
                             @endif
 
                             <div class="kt-notes">
-                                <div class="kt-notes__items">
-
-                                    @foreach ($posts as $post)
-                                        <div class="kt-notes__item">
-                                            <div class="kt-notes__media">
-                                                <img class="kt-hidden-"
-                                                     src="{{ getPostCover($post->user->id, $post->cover) }}"
-                                                     alt="image">
-                                            </div>
-                                            <div class="kt-notes__content">
-                                                <div class="kt-notes__section">
-                                                    <div class="kt-notes__info">
-                                                        <a href="{{ route('client.post.index') }}"
-                                                           class="kt-notes__title">
-                                                            {{ $post->title }}
-                                                        </a>
-                                                        <span class="kt-notes__desc">
-                                                    {{ getCreatedFromTime($post) }}
-                                                </span>
-                                                        @if (isNew($post->created_at))
-                                                            <span
-                                                                class="kt-badge kt-badge--success kt-badge--inline">new</span>
-                                                        @endif
-                                                        @if ($post->categories()->count() > 0)
-                                                            @foreach ($post->categories as $postCategory)
-                                                                <span
-                                                                    class="kt-badge kt-badge--danger kt-badge--inline">{{ $postCategory->name }}</span>
-                                                            @endforeach
-                                                        @else
-                                                            <span
-                                                                class="kt-badge kt-badge--primary kt-badge--inline">Uncategorized</span>
-                                                        @endif
-                                                    </div>
-                                                    @include('admin.posts.controls')
-                                                </div>
-                                                <span class="kt-notes__body">
-{{--                                            {!! strtok(strip_tags($post->content, "<br>"), ".") !!}--}}
-                                                    @if (strlen($post->content) > 500)
-                                                        {!! substr(strip_tags($post->content, "<br>"), 0, 500) !!}
-                                                        <span><a href="#">...Read more</a></span>
-                                                    @else
-                                                        {!! strip_tags($post->content, "<br>") !!}
-                                                    @endif
-                                                </span>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                <div class="kt-notes__items all-posts">
+                                    @include('admin.posts.list_body')
                                 </div>
                             </div>
 
-                            <!--begin: Pagination-->
-                            <div class="kt-pagination  kt-pagination--brand" style="display: block;">
-                                {{ $posts->links('vendor.pagination.metronic') }}
-                            </div>
 
-                            <!--end: Pagination-->
                         </div>
 
                     </div>
@@ -157,4 +114,6 @@
         $('.kt-menu__item.kt-menu__item--submenu.post-manager').addClass('kt-menu__item--open');
         $('.kt-menu__item.posts').addClass('kt-menu__item--active');
     </script>
+
+    @include('admin.posts.js')
 @endsection

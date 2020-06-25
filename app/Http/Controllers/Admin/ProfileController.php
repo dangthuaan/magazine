@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EmailResetRequest;
 use App\Http\Requests\PasswordChangeRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Repositories\Profile\ProfileInterface;
+use App\Repositories\User\UserInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
@@ -22,13 +24,20 @@ class ProfileController extends Controller
     protected $profile;
 
     /**
+     * @var Model User
+     */
+    protected $user;
+
+    /**
      * Register User Constructor
      *
      * @param ProfileInterface $profile
+     * @param UserInterface $user
      */
-    public function __construct(ProfileInterface $profile)
+    public function __construct(ProfileInterface $profile, UserInterface $user)
     {
         $this->profile = $profile;
+        $this->user = $user;
     }
 
     /**
@@ -39,7 +48,7 @@ class ProfileController extends Controller
      */
     public function overview($username)
     {
-        $user = $this->profile->find($username, 'username');
+        $user = $this->profile->find($username, '=', 'username');
 
         return view('admin.profile.overview', compact('user'));
     }
@@ -58,9 +67,10 @@ class ProfileController extends Controller
      * Update profile information.
      *
      * @param ProfileRequest $request
-     * @return RedirectResponse
+     * @return JsonResponse
+     * @throws \Throwable
      */
-    public function update(ProfileRequest $request)
+    public function update(ProfileRequest $request, $username)
     {
         $data = $request->except(['email', 'username', '_token']);
 
@@ -72,43 +82,73 @@ class ProfileController extends Controller
 
         $updateProfile = $this->profile->update(Auth::id(), $data);
 
+
         if (!$updateProfile) {
-            return back()->with('error', 'Update Information Failed!');
+            return response()->json([
+                'status' => false
+            ]);
         }
 
-        return back()->with('success', 'Your Profile Information has been updated.');
+        return response()->json([
+            'status' => true,
+            'html' => view('admin.profile.main', ['user' => $this->user->find($username, '=', 'username')])->render(),
+        ]);
     }
 
     /**
      * Update password.
      *
      * @param PasswordChangeRequest $request
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function updatePassword(PasswordChangeRequest $request)
     {
-        $checkCurrentPassword = $this->profile->checkCurrentPassword($request->current_password);
-
-        if (!$checkCurrentPassword) {
-            return back()->with('error',
-                'Your current password does not matches with the password you provided. Please try again.');
-        }
-
-        $checkNewPassword = $this->profile->checkNewPassword($request->current_password, $request->new_password);
-
-        if ($checkNewPassword) {
-            return back()->with('error',
-                'New Password cannot be same as your current password. Please choose a different password.');
-        }
-
         $updatePassword = $this->profile->update(Auth::id(), ['password' => Hash::make($request->new_password)]);
 
         if (!$updatePassword) {
-            return back()->with('error', 'Update Password failed!');
+            return response()->json([
+                'status' => false,
+            ]);
         }
 
-        return back()->with('success', 'Success! Your password has been updated.');
+        return response()->json([
+            'status' => true,
+        ]);
 
+    }
+
+    /**
+     * Send Reset Password email.
+     *
+     * @param EmailResetRequest $request
+     * @return JsonResponse
+     */
+    public function forgotPassword(EmailResetRequest $request)
+    {
+        $email = $request->email;
+
+        $userEmailValid = $this->user->checkValidEmail($email);
+
+        if (!$userEmailValid) {
+            return response()->json([
+                'email' => false,
+            ]);
+        }
+
+        $this->user->createNewResetToken($email);
+
+
+        $sendEmail = $this->user->sendResetEmail($email);
+
+        if (!$sendEmail) {
+            return response()->json([
+                'status' => false,
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+        ]);
     }
 
 }
