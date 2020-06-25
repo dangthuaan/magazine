@@ -35,8 +35,8 @@ class BaseRepository implements BaseInterface
      */
     public function all($relations = [])
     {
-        if ($this->model instanceof Builder) {
-            return $this->model->get();
+        if (!empty($relations)) {
+            return $this->model->with($relations)->get();
         } else {
             return $this->model->all();
         }

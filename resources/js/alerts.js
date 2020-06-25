@@ -19,28 +19,6 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.sweetalert_forgot', function (e) {
-        swal.fire({
-            title: 'Enter your email address and we will send you a reset link?',
-            type: 'info',
-            input: 'email',
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'You need to write your email address!'
-                }
-            },
-            showCancelButton: true,
-            confirmButtonText: 'Send'
-        }).then(function (result) {
-            if (result.value) {
-                swal.fire({
-                    title: 'Password reset link has been sent!',
-                    type: 'success'
-                });
-            }
-        });
-    });
-
     //block user
     $(document).on('click', '.sweetalert_block_user', function () {
         var userIds = $.makeArray($(this).data('user-id'));

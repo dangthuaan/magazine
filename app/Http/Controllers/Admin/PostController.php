@@ -10,7 +10,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -49,7 +48,7 @@ class PostController extends Controller
     {
         $posts = $this->post->list(['user', 'categories'], 'desc', config('pagination.posts'));
 
-        $categories = $this->category->all();
+        $categories = $this->category->all(['childs']);
 
         return view('admin.posts.list', compact('posts', 'categories'));
     }
@@ -58,7 +57,7 @@ class PostController extends Controller
      * Store a new post.
      *
      * @param PostRequest $request
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function store(PostRequest $request)
     {
@@ -67,10 +66,15 @@ class PostController extends Controller
         $newCategoryPost = $this->post->attachCategory($newPost, $request->categories);
 
         if (!$newPost || !$newCategoryPost) {
-            return back()->with('error', 'Something went wrong!');
+            return response()->json([
+                'status' => false
+            ]);
         }
 
-        return back()->with('success', 'Success! New Post has been created.');
+        return response()->json([
+            'status' => true,
+            'html' => view('admin.posts.each', ['post' => $newPost])->render()
+        ]);
     }
 
     /**
@@ -84,7 +88,7 @@ class PostController extends Controller
     {
         $post = $this->post->findWith('categories', $id);
 
-        $categories = $this->category->findAll(null, 'parent_id');
+        $categories = $this->category->all(['childs']);
 
         if (!$post) {
             return response()->json([
@@ -107,7 +111,7 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        $updatePost = $this->post->edit(Auth::id(), $id, $request->only('cover', 'title', 'content'),
+        $updatePost = $this->post->edit(Auth::id(), $id, $request->only('cover', 'old_cover', 'title', 'content'),
             true);
 
         $updateCategoryPost = $this->post->syncCategory($this->post->find($id), $request->categories);
@@ -119,7 +123,8 @@ class PostController extends Controller
         }
 
         return response()->json([
-            'status' => true
+            'status' => true,
+            'html' => view('admin.posts.each_body', ['post' => $this->post->find($id)])->render(),
         ]);
 
     }
@@ -149,8 +154,15 @@ class PostController extends Controller
     {
         $restorePost = $this->post->restore($id);
 
+        if (!$restorePost) {
+            return response()->json([
+                'status' => false
+            ]);
+        }
+
         return response()->json([
-            'status' => $restorePost
+            'status' => true,
+            'html' => view('admin.posts.each_body', ['post' => $this->post->find($id)])->render(),
         ]);
     }
 
@@ -158,20 +170,25 @@ class PostController extends Controller
      * Search.
      *
      * @param Request $request
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function search(Request $request)
     {
         $postResult = $this->post->search($request->search,
             ['title', 'content'], ['categories']);
 
-        $categories = $this->category->all();
+        $categories = $this->category->all(['childs']);
 
         if (!$postResult) {
-            return back()->with('error', 'Something went wrong!');
+            return response()->json([
+                'status' => false
+            ]);
         }
 
-        return view('admin.posts.list', ['posts' => $postResult, 'categories' => $categories]);
+        return response()->json([
+            'status' => true,
+            'html' => view('admin.posts.list_body', ['posts' => $postResult, 'categories' => $categories])->render()
+        ]);
 
     }
 }

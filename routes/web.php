@@ -51,9 +51,11 @@ Route::middleware('guest')
 
         Route::post('password-reset', 'ResetPasswordController@mail')->name('password.email');
 
-        Route::get('reset-password/{token}', 'ResetPasswordController@form')->name('password.form');
+        Route::get('reset-password/{token}',
+            'ResetPasswordController@form')->name('password.form')->withoutMiddleware('guest');
 
-        Route::post('reset-password/{token}', 'ResetPasswordController@reset')->name('password.reset');
+        Route::post('reset-password/{token}',
+            'ResetPasswordController@reset')->name('password.reset')->withoutMiddleware('guest');
     });
 
 Route::middleware('verified')
@@ -66,7 +68,13 @@ Route::middleware('verified')
 
         Route::get('/post/{id}', 'PostController@show')->name('posts.show');
 
-        Route::post('/post/{id}/store-comment', 'CommentController@store')->name('comments.store');
+        Route::post('/post/{id}/comment', 'CommentController@store')->name('comments.store');
+
+        Route::get('/comment/{commentId}', 'CommentController@edit')->name('comments.edit');
+
+        Route::put('/comment/{commentId}', 'CommentController@update')->name('comments.update');
+
+        Route::delete('/comment/{commentId}', 'CommentController@destroy')->name('comments.destroy');
     });
 
 Route::middleware(['auth', 'verified'])
@@ -87,6 +95,7 @@ Route::middleware(['auth', 'verified'])
 
         //search user
         Route::get('/users/search', 'UserController@search')->name('users.search');
+
 
         Route::get('/groups', 'UserController@group')->name('users.group');
 
@@ -129,11 +138,14 @@ Route::middleware(['auth', 'verified'])
         //update user profile
         //update password
         Route::get('/profile/password', 'ProfileController@password')->name('profile.password');
-        Route::post('/profile/password', 'ProfileController@updatePassword')->name('profile.password.update');
+        Route::put('/profile/password', 'ProfileController@updatePassword')->name('profile.password.update');
+
+        //forgot password
+        Route::post('profile/forgot-password', 'ProfileController@forgotPassword')->name('profile.password.forgot');
 
         //update information
         Route::get('/profile/{username}', 'ProfileController@overview')->name('profile.overview');
-        Route::post('/profile', 'ProfileController@update')->name('profile.update');
+        Route::post('/profile/{username}', 'ProfileController@update')->name('profile.update');
 
     });
 

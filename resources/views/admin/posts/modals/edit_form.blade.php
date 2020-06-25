@@ -51,7 +51,7 @@
                             <span></span>
                         </label>
 
-                        @if ($selectCategory->childs()->count() > 0)
+                        @if ($selectCategory->childs->count() > 0)
                             @foreach ($selectCategory->childs as $child)
                                 <div class="row kt-margin-l-5">
                                     <span>--&nbsp;</span>

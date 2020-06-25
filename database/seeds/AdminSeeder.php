@@ -14,12 +14,12 @@ class AdminSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'role_id' => 1,
-            'first_name' => 'An',
-            'last_name' => 'Dang Thua',
+            'first_name' => 'Admin',
+            'last_name' => 'Admin',
             'username' => 'admin',
             'email' => 'admin@omt-magazine.test',
-            'password' => Hash::make('an'),
+            'email_verified_at' => now(),
+            'password' => Hash::make('admin'),
         ]);
     }
 }

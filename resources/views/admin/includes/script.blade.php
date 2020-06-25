@@ -137,12 +137,8 @@
 
 <script src="{{ asset('js/alerts.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/admin.js') }}" type="text/javascript"></script>
-<script src="{{ asset('js/profile.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/ajax.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/functions.js') }}" type="text/javascript"></script>
-
-<script src="{{ asset('js/category.js') }}" type="text/javascript"></script>
-<script src="{{ asset('js/post.js') }}" type="text/javascript"></script>
 
 <script>
     function errorMessage() {
@@ -150,8 +146,14 @@
             type: 'error',
             title: 'Oops...',
             text: 'Something went wrong!',
-        }).then(function () {
-            location.reload();
+        });
+    }
+
+    function wrongEmail() {
+        Swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: 'Your email is not match with your account, please try again!',
         });
     }
 
@@ -159,8 +161,6 @@
         Swal.fire({
             type: 'success',
             title: 'Update Success!',
-        }).then(function () {
-            location.reload();
         });
     }
 
@@ -168,8 +168,6 @@
         Swal.fire({
             type: 'success',
             title: 'Removed!',
-        }).then(function () {
-            location.reload();
         });
     }
 
@@ -177,8 +175,74 @@
         Swal.fire({
             type: 'success',
             title: 'Post has been restored!',
-        }).then(function () {
-            location.reload();
         });
     }
+
+    function scrollToTop() {
+        return $("html, body").animate({scrollTop: 0});
+    }
+
+    function scrollToDiv(container = $("html, body"), name, type = 'class') {
+        if (type === 'id') {
+            return container.animate({
+                scrollTop: $("#" + name).offset().top - 200
+            });
+        } else {
+            return container.animate({
+                scrollTop: $("." + name).offset().top - 200
+            });
+        }
+    }
+
+    function refreshDataTable(name, type = 'class') {
+        if (type === 'id') {
+            return $('#' + name).dataTable();
+        }
+
+        return $('.' + name).dataTable();
+    }
+
+    function showInvalidFeedBack(name, errors) {
+        $(name + ' .invalid-feedback').html('');
+
+        $.each(errors, function (key, value) {
+            let invalid = $(name + ' .invalid-feedback.' + key);
+
+            invalid.show();
+            invalid.append('<strong>' + value + '</strong><br>');
+        });
+    }
+
+    function toast(message, type = 'success') {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        switch (type) {
+            case 'error':
+                toastr.error(message);
+                break;
+            case 'warning':
+                toastr.warning(message);
+                break;
+            case 'success':
+                toastr.success(message);
+                break;
+        }
+    }
+
 </script>

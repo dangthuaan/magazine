@@ -8,7 +8,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Throwable;
@@ -37,7 +36,7 @@ class UserController extends Controller
      */
     public function list()
     {
-        $users = $this->user->list([], 'desc', 10);
+        $users = $this->user->findAll(null, '!=', $attribute = 'email_verified_at');
 
         if (!$users) {
             return view('admin.users.list', ['failed' => true]);
@@ -110,7 +109,7 @@ class UserController extends Controller
      * Search.
      *
      * @param Request $request
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function search(Request $request)
     {
@@ -118,10 +117,14 @@ class UserController extends Controller
             ['first_name', 'last_name', 'username', 'email', 'location', 'phone']);
 
         if (!$usersResult) {
-            return back()->with('error', 'Something went wrong!');
+            return response()->json([
+                'status' => false
+            ]);
         }
 
-        return view('admin.users.list', ['users' => $usersResult]);
-
+        return response()->json([
+            'status' => true,
+            'html' => view('admin.users.body', ['users' => $usersResult])->render()
+        ]);
     }
 }

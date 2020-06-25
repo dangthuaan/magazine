@@ -10,41 +10,30 @@
             </div>
             <div class="modal-body">
                 <!--begin::Form-->
-                <form method="POST" action="{{ route('admin.posts.store') }}" class="kt-form" id="newPostModalForm"
+                <form method="POST" class="kt-form" id="newPostModalForm"
                       enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label>Cover</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input @error('cover') is-invalid @enderror"
+                            <input type="file" class="custom-file-input "
                                    id="postCoverFile" name="cover" style="cursor: pointer;" accept=".png, .jpg, .jpeg">
                             <label class="custom-file-label post-cover-label" for="postCoverFile"
                                    style="cursor: pointer;">Choose file</label>
                         </div>
+                        <span class="invalid-feedback d-block cover" role="alert"></span>
                         <span class="form-text text-muted cover">Upload your post's cover image (optional).</span>
-                        @error('cover')
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
 
-                        <div class="post-cover-wrapper">
-
-                        </div>
+                        <div class="post-cover-wrapper"></div>
                         <div class="remove-post-cover" style="display: none">
                             <button type="button" class="btn btn-danger btn-sm">Remove Cover</button>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Title <span style="color: #f6214b;">*</span></label>
-                        <input type="text" class="form-control @error('title') is-invalid @enderror" name="title">
+                        <input type="text" class="form-control" name="title">
+                        <span class="invalid-feedback title" role="alert"></span>
                         <span class="form-text text-muted">Choose a title for post.</span>
-                        @error('title')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-
                     </div>
                     <div class="form-group">
                         <label for="postCategories">Choose Category</label>
@@ -58,7 +47,7 @@
                                             <span></span>
                                         </label>
 
-                                        @if ($selectCategory->childs()->count() > 0)
+                                        @if ($selectCategory->childs->count() > 0)
                                             @foreach ($selectCategory->childs as $child)
                                                 <div class="row kt-margin-l-5">
                                                     <span>--&nbsp;</span>
@@ -81,11 +70,18 @@
                         <textarea class="summernote summernote_post_content"
                                   name="content">{{ old('content') }}</textarea>
                     </div>
+                    <span class="invalid-feedback content" role="alert"></span>
                 </form>
 
                 <!--end::Form-->
             </div>
             <div class="modal-footer">
+                <!-- begin:: Ajax Loading mask -->
+                <div id="create-modal-ajax-loading" style="display: none;">
+                    <img id="ajax-loading-image" src="{{ asset('storage/images/basic/ajax-page-loader.svg') }}"
+                         alt="Loading..."/>
+                </div>
+                <!-- end:: Ajax Loading mask -->
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Create</button>
             </div>
@@ -94,13 +90,3 @@
 </div>
 
 <!--end::Modal-->
-
-@if ($errors->any())
-@section('js')
-    <script>
-        $(document).ready(function () {
-            $('#newPostModal').modal('show');
-        });
-    </script>
-@endsection
-@endif

@@ -7,15 +7,15 @@
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">User Manager > Users</h3>
             </div>
+
+            <!-- begin:: Ajax Loading mask -->
+            <div id="ajax-loading" style="display: none; margin-bottom: -25px;">
+                <img id="ajax-loading-image" src="{{ asset('storage/images/basic/ajax-page-loader.svg') }}"
+                     alt="Loading..."/>
+            </div>
+            <!-- end:: Ajax Loading mask -->
         </div>
         <!-- end:: Content Head -->
-
-        <!-- begin:: Ajax Loading mask -->
-        <div id="ajax-loading" style="display: none; margin-bottom: -25px;">
-            <img id="ajax-loading-image" src="{{ asset('storage/images/basic/ajax-page-loader.svg') }}"
-                 alt="Loading..."/>
-        </div>
-        <!-- end:: Ajax Loading mask -->
 
         <!-- begin:: Content -->
         <div class="kt-content  kt-grid__item kt-grid__item--fluid transition" id="kt_content">
@@ -59,12 +59,13 @@
                                 </div>
                                 &nbsp;
                                 <form class="kt-form kt-form--label-right search-form" style="display:inline-block;"
-                                      method="GET" action="{{ route('admin.users.search') }}">
+                                      method="GET">
                                     <div class="input-group">
-                                        <input type="text" name="search" class="form-control"
+                                        <input type="text" name="search" class="form-control" id="search-user-input"
                                                placeholder="Search for...">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="submit"><i class="la la-search"></i>
+                                            <button class="btn btn-primary" id="search-user" type="submit"><i
+                                                    class="la la-search"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -73,47 +74,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="kt-portlet__body">
-
-                    @if (isset($failed))
-                        <div class="col-xl-12 kt-margin-t-10">
-                            <div class="alert alert-danger" role="alert">
-                                Something went wrong!
-                            </div>
-                        </div>
-                    @elseif (isset($users) && $users->count() > 0)
-                    <!--begin: Datatable -->
-                        <table class="table table-striped- table-bordered table-hover table-checkable"
-                               id="kt_table">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th style="text-align: left">
-                                    <label class="kt-checkbox kt-checkbox--single kt-checkbox--solid">
-                                        <input type="checkbox" value="" class="m-group-checkable">
-                                        <span></span>
-                                    </label>
-                                </th>
-                                <th>Username</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Email</th>
-                                <th>Joined</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($users as $user)
-                                <tr class="each user-{{ $user->id }}">
-                                    @include('admin.users.each')
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-
-                        <!--end: Datatable -->
-                    @endif
+                <div class="kt-portlet__body list-user">
+                    @include('admin.users.body')
                 </div>
             </div>
         </div>
@@ -145,5 +107,71 @@
         $('.kt-menu__item').removeClass('kt-menu__item--active');
         $('.kt-menu__item.kt-menu__item--submenu.user-manager').addClass('kt-menu__item--open');
         $('.kt-menu__item.users').addClass('kt-menu__item--active');
+
+        //find users
+        function findUsers(inputString) {
+            let url = '/admin/users/search?search=' + inputString;
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    if (!result.status) {
+                        return errorMessage();
+                    }
+
+                    $('.list-user').html(result.html);
+
+                    refreshDataTable('users_table', 'id');
+                },
+                error: function () {
+                    return errorMessage();
+                }
+            });
+        };
+
+        //search users
+        $(document).on('click', '#search-user', function (e) {
+            e.preventDefault();
+
+            let inputString = $(this).parent().prev().val();
+
+            findUsers(inputString);
+        });
+
+        $(document).on('keypress', '#search-user-input', function (e) {
+            if (((e.keyCode || e.which) === 13) && !e.shiftKey) {
+                e.preventDefault();
+
+                let inputString = $(this).val();
+
+                findUsers(inputString);
+            }
+        });
+
+        //users table
+        $('#users_table').DataTable({
+            responsive: true,
+            "order": [[5, "desc"]],
+
+            // DOM Layout settings
+            dom: `<'row'<'col-sm-12'tr>>
+			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
+
+            lengthMenu: [5, 10, 25, 50],
+
+            pageLength: 10,
+
+            columnDefs: [
+                {
+                    targets: 0,
+                    width: '5px',
+                    className: 'sorting_disabled',
+                    orderable: false,
+                },
+            ],
+        });
+
     </script>
 @endsection

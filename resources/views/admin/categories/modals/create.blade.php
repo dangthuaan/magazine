@@ -10,23 +10,20 @@
             </div>
             <div class="modal-body">
                 <!--begin::Form-->
-                <form method="POST" action="{{ route('admin.categories.store') }}" class="kt-form"
+                <form method="POST" class="kt-form"
                       id="newCategoryModalForm">
                     @csrf
+
                     <div class="form-group">
                         <label>Name</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name">
+                        <input type="text" class="form-control" name="name">
                         <span class="form-text text-muted">Choose a name for new category.</span>
 
-                        @error('name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
+                        <span class="invalid-feedback name" role="alert"></span>
                     </div>
                     <div class="form-group">
                         <label for="newSelect">Parent Category</label>
-                        <select class="form-control @error('parent_id') is-invalid @enderror" id="newSelect"
+                        <select class="form-control" id="newSelect"
                                 name="parent_id">
                             <option disabled="disabled" selected="selected">Choose Parent Category</option>
                             <option value="null">New Parent category</option>
@@ -37,31 +34,28 @@
                                 @endif
                             @endforeach
                         </select>
-                        @error('parent_id')
-                        <span class="invalid-feedback" role="alert">
-                                    <strong>
-                                        {{ $message }}
-                                    </strong>
-                                </span>
-                        @enderror
+
+                        <span class="invalid-feedback parent_id" role="alert"></span>
                     </div>
                     <div class="form-group form-group-last">
-                        <label for="exampleTextarea">Description</label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" id="exampleTextarea"
+                        <label for="categoryDescription">Description</label>
+                        <textarea class="form-control" id="categoryDescription"
                                   name="description" rows="3"></textarea>
-                        @error('description')
-                        <span class="invalid-feedback" role="alert">
-                                    <strong>
-                                        {{ $message }}
-                                    </strong>
-                                </span>
-                        @enderror
+
+                        <span class="invalid-feedback description" role="alert"></span>
                     </div>
                 </form>
 
                 <!--end::Form-->
             </div>
             <div class="modal-footer">
+                <!-- begin:: Ajax Loading mask -->
+                <div id="create-modal-ajax-loading" style="display: none;">
+                    <img id="ajax-loading-image" src="{{ asset('storage/images/basic/ajax-page-loader.svg') }}"
+                         alt="Loading..."/>
+                </div>
+                <!-- end:: Ajax Loading mask -->
+
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Create</button>
             </div>
@@ -70,13 +64,3 @@
 </div>
 
 <!--end::Modal-->
-
-@if ($errors->any())
-@section('js')
-    <script>
-        $(document).ready(function () {
-            $('#newCategoryModal').modal('show');
-        });
-    </script>
-@endsection
-@endif

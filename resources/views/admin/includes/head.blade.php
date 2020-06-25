@@ -105,6 +105,16 @@
 
     <!--end::Layout Skins -->
     <link rel="icon" type="image/png" href="{{ asset('metronic/media/logos/favicon.ico') }}"/>
+
+    <style>
+        body.modal-open {
+            overflow: hidden !important;
+        }
+
+        .modal-footer {
+            padding: 20px;
+        }
+    </style>
 </head>
 
 <!-- end::Head -->

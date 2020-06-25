@@ -7,8 +7,15 @@
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">My Profile > Change Password</h3>
             </div>
+            <!-- begin:: Ajax Loading mask -->
+            <div id="ajax-loading" style="display: none; margin-bottom: -25px;">
+                <img id="ajax-loading-image" src="{{ asset('storage/images/basic/ajax-page-loader.svg') }}"
+                     alt="Loading..."/>
+            </div>
+            <!-- end:: Ajax Loading mask -->
         </div>
         <!-- end:: Content Head -->
+
 
         <!-- begin:: Content -->
         <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
@@ -56,9 +63,9 @@
                                     </div>
                                 @endif
 
-                                <form method="POST" action="{{ route('admin.profile.password.update') }}"
-                                      class="kt-form kt-form--label-right">
+                                <form method="POST" class="kt-form kt-form--label-right" id="resetPasswordForm">
                                     @csrf
+                                    @method('PUT')
                                     <div class="kt-portlet__body">
                                         <div class="kt-section kt-section--first">
                                             <div class="kt-section__body">
@@ -74,14 +81,11 @@
                                                         Password</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <input type="password" name="current_password"
-                                                               class="form-control @error('current_password') is-invalid @enderror"
+                                                               class="form-control"
                                                                value=""
                                                                placeholder="Current password" required>
-                                                        @error('current_password')
-                                                        <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                                                        @enderror
+                                                        <span class="invalid-feedback current_password"
+                                                              role="alert"></span>
                                                         <a href="javascript:;"
                                                            class="kt-link kt-font-sm kt-font-bold kt-margin-t-5 sweetalert_forgot">Forgot
                                                             password ?</a>
@@ -91,14 +95,11 @@
                                                     <label class="col-xl-3 col-lg-3 col-form-label">New Password</label>
                                                     <div class="col-lg-9 col-xl-6">
                                                         <input type="password"
-                                                               class="form-control @error('new_password') is-invalid @enderror"
+                                                               class="form-control"
                                                                value="" name="new_password"
                                                                placeholder="New password" required>
-                                                        @error('new_password')
-                                                        <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                                                        @enderror
+                                                        <span class="invalid-feedback new_password"
+                                                              role="alert"></span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group form-group-last row">
@@ -117,7 +118,8 @@
                                         <div class="kt-form__actions">
                                             <div class="row">
                                                 <div class="col-lg-12 col-xl-12">
-                                                    <button type="submit" class="btn btn-brand btn-bold float-left">
+                                                    <button type="submit" class="btn btn-brand btn-bold float-left"
+                                                            data-user-id="{{ Auth::id() }}">
                                                         Change
                                                         Password
                                                     </button>&nbsp;
@@ -145,10 +147,105 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript">
+    <script>
         $('.kt-menu__item').removeClass('kt-menu__item--active');
         $('.kt-menu__item.profile').addClass('kt-menu__item--active');
 
         $('.kt-widget__item.change_password').addClass('kt-widget__item--active');
+
+        $(document).on('click', '.sweetalert_forgot', function (e) {
+            e.preventDefault();
+
+            swal.fire({
+                title: 'Enter your email address and we will send you a reset link?',
+                type: 'info',
+                input: 'email',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'You need to write your email address!'
+                    }
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Send'
+            }).then(function (result) {
+                if (result.value) {
+                    let url = '/admin/profile/forgot-password';
+
+                    let data = {
+                        'email': result.value,
+                    }
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: data,
+                        cache: false,
+                        success: function (result) {
+                            console.log(result.email, result.status, typeof result.email !== "undefined");
+                            if (typeof result.email !== "undefined" && !result.email) {
+                                return wrongEmail();
+                            } else if (typeof result.email === "undefined" && !result.status) {
+                                return errorMessage();
+                            } else {
+                                swal.fire({
+                                    title: 'Password reset link has been sent to your email!',
+                                    type: 'success'
+                                });
+                            }
+                        },
+                        error: function (xhr) {
+                            if (xhr.responseJSON.errors.email) {
+                                swal.fire({
+                                    title: 'You must enter valid email!',
+                                    type: 'error'
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '#resetPasswordForm button[type=\'submit\']', function (e) {
+            e.preventDefault();
+
+            let url = '/admin/profile/password';
+
+            let data = $('#resetPasswordForm').serialize();
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: data,
+                cache: false,
+                success: function (result) {
+                    if (!result.status) {
+                        return errorMessage();
+                    }
+
+                    swal.fire({
+                        title: 'Your password has been changed!',
+                        type: 'success'
+                    });
+
+                    $('#resetPasswordForm').trigger("reset");
+
+                    $('.invalid-feedback').hide();
+
+                },
+                error: function (xhr) {
+                    $('#resetPasswordForm').trigger("reset");
+
+                    $.each(xhr.responseJSON.errors, function (key, value) {
+                        $('.invalid-feedback').html('');
+
+                        let invalid = $('.invalid-feedback.' + key);
+
+                        invalid.show();
+                        invalid.append('<strong>' + value[0] + '</strong>');
+                    });
+                }
+            });
+        });
     </script>
 @endsection

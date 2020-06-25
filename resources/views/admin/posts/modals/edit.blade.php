@@ -12,6 +12,13 @@
 
             </div>
             <div class="modal-footer">
+                <!-- begin:: Ajax Loading mask -->
+                <div id="edit-modal-ajax-loading" style="display: none;">
+                    <img id="ajax-loading-image" src="{{ asset('storage/images/basic/ajax-page-loader.svg') }}"
+                         alt="Loading..."/>
+                </div>
+                <!-- end:: Ajax Loading mask -->
+
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Update</button>
             </div>

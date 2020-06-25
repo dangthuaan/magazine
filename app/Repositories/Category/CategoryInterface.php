@@ -10,9 +10,10 @@ interface CategoryInterface extends BaseInterface
      * Store new category.
      *
      * @param $data
+     * @param bool $return_object
      * @return bool
      */
-    public function new($data);
+    public function new($data, $return_object = false);
 
     /**
      * Update new category.

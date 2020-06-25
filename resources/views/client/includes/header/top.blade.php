@@ -66,7 +66,3 @@
     </div>
 </div>
 <!-- End Header Top -->
-
-@include('client.widgets.modals.login')
-@include('client.widgets.modals.register')
-@include('client.widgets.modals.forgot_password')

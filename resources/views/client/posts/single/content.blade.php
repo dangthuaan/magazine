@@ -64,7 +64,13 @@
         @endif
     </div>
 
-    <!-- List all comment -->
+@auth
+    <!-- Comment form -->
+    @include('client.posts.single.comments.form')
+    <!-- End Comment form -->
+@endauth
+
+<!-- List all comment -->
 @include('client.posts.single.comments.list')
 <!-- End List all comment -->
 
