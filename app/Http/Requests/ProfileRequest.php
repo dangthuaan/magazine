@@ -15,8 +15,8 @@ class ProfileRequest extends FormRequest
     {
         return [
             'avatar' => ['image', 'mimes:jpeg,png,jpg', 'max:2048'],
-            'first_name' => ['string', 'max:255'],
-            'last_name' => ['string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'phone' => ['nullable', 'numeric', 'digits_between:6,20'],
             'location' => ['nullable']
         ];

@@ -39,15 +39,14 @@
                                             <input type="text" name="search" class="form-control" id="search-post-input"
                                                    placeholder="Search for...">
                                             <div class="input-group-append">
-                                                <button class="btn btn-primary" id="search-user" type="submit"><i
+                                                <button class="btn btn-primary" id="search-post" type="submit"><i
                                                         class="la la-search"></i></button>
                                             </div>
                                         </div>
                                     </form>
 
                                     &nbsp;
-                                    <a href="#" class="btn btn-brand add-new btn-elevate btn-icon-sm"
-                                       data-toggle="modal" data-target="#newPostModal">
+                                    <a href="#" class="btn btn-brand add-new btn-elevate btn-icon-sm" id="newPost">
                                         <i class="la la-plus"></i>
                                         New Post
                                     </a>

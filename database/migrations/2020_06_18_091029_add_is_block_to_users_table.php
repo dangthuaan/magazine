@@ -15,7 +15,7 @@ class AddIsBlockToUsersTable extends Migration
     {
         if (!Schema::hasColumn('users', 'is_block')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->boolean('is_block')->default(0)->after('role_id');
+                $table->boolean('is_block')->default(0)->after('id');
             });
         }
     }

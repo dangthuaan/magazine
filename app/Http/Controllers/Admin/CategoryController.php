@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Throwable;
 
 class CategoryController extends Controller
 {
@@ -42,10 +43,32 @@ class CategoryController extends Controller
     }
 
     /**
+     * New Category Form.
+     *
+     * @return JsonResponse
+     */
+    public function form()
+    {
+        $categories = $this->category->all(['childs']);
+
+        if (!$categories) {
+            return response()->json([
+                'status' => false
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'html' => view('admin.categories.modals.create_body', compact('categories'))->render()
+        ]);
+    }
+
+    /**
      * Store new category.
      *
      * @param CategoryRequest $request
      * @return JsonResponse
+     * @throws Throwable
      */
     public function store(CategoryRequest $request)
     {
@@ -124,8 +147,11 @@ class CategoryController extends Controller
     {
         $remove = $this->category->destroy($id);
 
+        $categories = $this->category->all(['childs']);
+
         return response()->json([
-            'status' => $remove
+            'status' => $remove,
+            'html' => view('admin.categories.body', compact('categories'))->render()
         ]);
     }
 }

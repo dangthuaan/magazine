@@ -102,6 +102,9 @@ Route::middleware(['auth', 'verified'])
         //posts
         Route::get('/posts', 'PostController@list')->name('posts.list');
 
+        //form new post
+        Route::get('/posts/new', 'PostController@form')->name('posts.new');
+
         //new post
         Route::post('/posts', 'PostController@store')->name('posts.store');
 
@@ -122,6 +125,9 @@ Route::middleware(['auth', 'verified'])
 
         //categories
         Route::get('/categories', 'CategoryController@list')->name('categories.list');
+
+        //form new categories
+        Route::get('/categories/new', 'CategoryController@form')->name('categories.new');
 
         //new categories
         Route::post('/categories', 'CategoryController@store')->name('categories.store');

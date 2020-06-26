@@ -3,13 +3,13 @@
         <div class="parent category-{{ $category->id }}">
             @include('admin.categories.parent')
 
-            @if ($category->childs->count() > 0)
-                <div class="child">
+            <div class="child">
+                @if ($category->childs->count() > 0)
                     @foreach ($category->childs as $child)
                         @include('admin.categories.child', ['category' => $child])
                     @endforeach
-                </div>
-            @endif
+                @endif
+            </div>
         </div>
     @endif
 @endforeach

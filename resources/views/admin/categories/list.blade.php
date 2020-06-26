@@ -32,8 +32,7 @@
                             </div>
                             <div class="kt-portlet__head-wrapper" style="padding: 10px 0px;">
                                 <div class="kt-portlet__head-actions">
-                                    <a href="#" class="btn btn-brand btn-elevate btn-icon-sm" data-toggle="modal"
-                                       data-target="#newCategoryModal">
+                                    <a href="#" class="btn btn-brand btn-elevate btn-icon-sm" id="newCategory">
                                         <i class="la la-plus"></i>
                                         New Category
                                     </a>

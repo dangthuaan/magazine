@@ -40,6 +40,20 @@ class PostController extends Controller
     }
 
     /**
+     * Display add new post form.
+     *
+     * @return JsonResponse
+     */
+    public function form()
+    {
+        $categories = $this->category->all(['childs']);
+
+        return response()->json([
+            'html' => view('admin.posts.modals.create_body', compact('categories'))->render()
+        ]);
+    }
+
+    /**
      * Display all posts.
      *
      * @return Application|Factory|View

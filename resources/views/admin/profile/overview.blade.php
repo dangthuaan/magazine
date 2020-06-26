@@ -76,18 +76,11 @@
                             $('.kt-widget__item.personal_info').addClass('kt-widget__item--active');
                         },
                         error: function (xhr) {
-                            showInvalidFeedBack(xhr.responseJSON.errors);
+                            toast("Form submission failed!", "error");
 
-                            $('.invalid-feedback').html('');
+                            showInvalidFeedBack("#updateProfileForm", xhr.responseJSON.errors);
 
-                            $.each(xhr.responseJSON.errors, function (key, value) {
-                                let invalid = $('.invalid-feedback.' + key);
-
-                                invalid.show();
-                                invalid.append('<strong>' + value + '</strong><br>');
-
-                                scrollToDiv('invalid-feedback.' + key);
-                            });
+                            scrollToDiv($('#updateProfileForm'), "invalid-feedback." + Object.keys(xhr.responseJSON.errors)[0]);
                         }
                     });
                 });

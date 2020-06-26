@@ -1,4 +1,29 @@
 <script>
+    $(document).on('click', '#newCategory', function (e) {
+        e.preventDefault();
+
+        let url = '/admin/categories/new';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+                if (!result.status) {
+                    return errorMessage();
+                }
+
+                $('#newCategoryModal').modal('show');
+
+                $('#newCategoryModal').html(result.html);
+
+            },
+            error: function () {
+                return errorMessage();
+            }
+        });
+    });
+
     $(document).on('click', '#newCategoryModal button[type=\'submit\']', function (e) {
         e.preventDefault();
 
@@ -164,7 +189,7 @@
                             errorMessage();
                         }
 
-                        $('.list-group-item.category-' + categoryId).remove();
+                        $('.all-categories').html(result.html);
                     },
                     error: function () {
                         errorMessage();

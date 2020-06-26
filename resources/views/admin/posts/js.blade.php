@@ -4,6 +4,31 @@
         height: 500
     });
 
+    $(document).on('click', '#newPost', function (e) {
+        e.preventDefault();
+
+        let url = "/admin/posts/new";
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+                $('#newPostModal').modal('show');
+
+                $('#newPostModal').html(result.html);
+
+                $('#newPostModal').find("textarea[name='content']").summernote({
+                    placeholder: 'Your post content here..',
+                    height: 500
+                });
+            },
+            error: function () {
+                return errorMessage();
+            },
+        });
+    });
+
     $(document).on('click', '#newPostModal button[type=submit]', function (e) {
         e.preventDefault();
 

@@ -236,14 +236,11 @@
                 error: function (xhr) {
                     $('#resetPasswordForm').trigger("reset");
 
-                    $.each(xhr.responseJSON.errors, function (key, value) {
-                        $('.invalid-feedback').html('');
+                    toast("Form submission failed!", "error");
 
-                        let invalid = $('.invalid-feedback.' + key);
+                    showInvalidFeedBack("#resetPasswordForm", xhr.responseJSON.errors);
 
-                        invalid.show();
-                        invalid.append('<strong>' + value[0] + '</strong>');
-                    });
+                    scrollToDiv($('#resetPasswordForm'), "invalid-feedback." + Object.keys(xhr.responseJSON.errors)[0]);
                 }
             });
         });
