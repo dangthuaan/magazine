@@ -18,7 +18,7 @@ if (!function_exists('getUserAvatar')) {
 if (!function_exists('getPostCover')) {
     function getPostCover($id, $image)
     {
-        $imagePath = '/storage/images/post/cover/default.jpg';
+        $imagePath = '/storage/images/post/cover/no_cover.jpg';
 
         if ($image) {
             $imagePath = asset('/storage/images/post/cover/' . $id . '/' . $image);

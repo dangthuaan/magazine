@@ -1,5 +1,5 @@
 <div class="feature-image-thumb relative">
-    <img class="img-fluid" src="{{ asset('storage/images/post/top-post1.jpg') }}" alt="top-post-left"></img>
+    <img class="img-fluid" src="{{ asset('storage/images/post/top-post1.jpg') }}" alt="top-post-left">
 </div>
 <div class="top-post-details">
     <ul class="post-tag">

@@ -3,9 +3,20 @@
 namespace App\Repositories\Post;
 
 use App\Repositories\Base\BaseInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface PostInterface extends BaseInterface
 {
+    /**
+     * List featured posts.
+     *
+     * @param $relations
+     * @param $order
+     * @param $pages
+     * @return LengthAwarePaginator
+     */
+    public function featured($relations, $order, $pages);
+
     /**
      * Store new post.
      *

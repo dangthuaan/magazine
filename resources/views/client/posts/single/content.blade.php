@@ -5,7 +5,7 @@
 @endif
 <div class="content-wrapper">
     <ul class="post-tag margin-top-10">
-        @if ($post->categories()->count() > 0)
+        @if ($post->categories->count() > 0)
             @foreach ($post->categories as $postCategory)
                 <li>
                     <a href="#">{{ $postCategory->name }}</a>
