@@ -4,6 +4,7 @@ namespace App\Repositories\Post;
 
 use App\Models\Post;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -23,6 +24,27 @@ class PostRepository extends BaseRepository implements PostInterface
     public function __construct(Post $model)
     {
         parent::__construct($model);
+    }
+
+    /**
+     * List featured posts.
+     *
+     * @param $relations
+     * @param $order
+     * @param $pages
+     * @return LengthAwarePaginator
+     */
+    public function featured($relations, $order, $pages)
+    {
+        if ($order === 'desc') {
+            return $this->model->with($relations)->whereNotNull('cover')->orderByDesc()->paginate($pages);
+
+        } elseif ($order === 'asc') {
+            return $this->model->with($relations)->whereNotNull('cover')->paginate($pages);
+
+        } else {
+            return false;
+        }
     }
 
     /**
