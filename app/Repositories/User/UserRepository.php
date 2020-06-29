@@ -66,7 +66,9 @@ class UserRepository extends BaseRepository implements UserInterface
 
             $defaultRole = $this->role->find('%Normal%', 'LIKE', 'name');
 
-            $this->role->attachRoleUser($newUser, $defaultRole->id);
+            if ($defaultRole) {
+                $this->role->attachRoleUser($newUser, $defaultRole->id);
+            }
 
             $this->sendVerifyEmail($newUser);
 

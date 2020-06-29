@@ -6,34 +6,36 @@
 
         <!-- Main Top post -->
         <section class="top-post-area padding-top-10">
-            <div class="container no-padding">
-                <div class="row small-indents">
 
-                    <!-- Main Top left post -->
-                    <div class="col-lg-8 top-post-left">
+            @if ($posts->count() > 0)
+                <div class="container no-padding">
+                    <div class="row small-indents">
 
-                        @include('client.home.feature', ['post' => $posts->get(0)])
-                    </div>
-                    <!-- End Main Top post left -->
+                        <!-- Main Top left post -->
+                        <div class="col-lg-8 top-post-left">
 
-                    <!-- Main Top right posts -->
-                    <div class="col-lg-4 top-post-right">
-                        <!-- Main Top right post above -->
-                        <div class="single-top-post relative">
-                            @include('client.home.feature', ['post' => $posts->get(1)])
+                            @include('client.home.feature', ['post' => $posts->get(0)])
                         </div>
-                        <!-- End Main Top right post above -->
+                        <!-- End Main Top post left -->
 
-                        <!-- Main Top right post under -->
-                        <div class="single-top-post relative margin-top-10">
-                            @include('client.home.feature', ['post' => $posts->get(2)])
+                        <!-- Main Top right posts -->
+                        <div class="col-lg-4 top-post-right">
+                            <!-- Main Top right post above -->
+                            <div class="single-top-post relative">
+                                @include('client.home.feature', ['post' => $posts->get(1)])
+                            </div>
+                            <!-- End Main Top right post above -->
+
+                            <!-- Main Top right post under -->
+                            <div class="single-top-post relative margin-top-10">
+                                @include('client.home.feature', ['post' => $posts->get(2)])
+                            </div>
+                            <!-- End Main Top right post under -->
                         </div>
-                        <!-- End Main Top right post under -->
-                    </div>
-                    <!-- End Main Top right posts -->
+                        <!-- End Main Top right posts -->
 
+                    </div>
                 </div>
-            </div>
         </section>
         <!-- End Main Top post -->
 
@@ -63,8 +65,12 @@
 
                 </div>
             </div>
+
+            @endif
+            
         </section>
         <!-- End Main Latest post -->
+
 
     </div>
     <!-- End Main -->

@@ -50,6 +50,7 @@ class HomeController extends Controller
 
         $posts = $featured->merge($more);
 
+
         return view('client.home.index_2', compact('posts'));
     }
 }
