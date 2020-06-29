@@ -10,9 +10,17 @@
 <td>{{ $user->email }}</td>
 <td>{{ $user->joined() }}</td>
 <td>
-    <span class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill">
-    Manager
-    </span>
+    @if ($user->roles->count() > 0)
+        @foreach ($user->roles as $userRole)
+            <span class="kt-badge kt-badge--primary kt-badge--inline kt-badge--pill kt-margin-t-5">
+                {{ $userRole->name }}
+            </span>
+        @endforeach
+    @else
+        <span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-margin-t-5">
+                Undefined
+            </span>
+    @endif
 </td>
 
 @if ($user->isBlocked())

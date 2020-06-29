@@ -68,6 +68,7 @@ class UserController extends Controller
      * @param Request $request
      * @param $id
      * @return JsonResponse
+     * @throws Throwable
      */
     public function assignRole(Request $request, $id)
     {
@@ -75,10 +76,16 @@ class UserController extends Controller
 
         $assignRole = $this->role->syncRoleUser($user, $request->roles);
 
-        return response()->json([
-            'status' => $assignRole
-        ]);
+        if (!$assignRole) {
+            return response()->json([
+                'status' => false
+            ]);
+        }
 
+        return response()->json([
+            'status' => true,
+            'html' => view('admin.users.each', compact('user'))->render()
+        ]);
     }
 
     /**

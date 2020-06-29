@@ -190,6 +190,8 @@
                     toast("User Group assigned successfully!");
 
                     $('#assignUserRoleModal').modal('hide');
+
+                    $('.each.user-' + userId).html(result.html);
                 },
                 error: function () {
                     return errorMessage();

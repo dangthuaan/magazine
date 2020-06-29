@@ -18,24 +18,30 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($roles as $role)
+                @if ($roles->count() > 0)
+                    @foreach ($roles as $role)
+                        <tr>
+                            <td>
+                                <label class="kt-checkbox kt-checkbox--brand">
+                                    <input type="checkbox" name="roles[]"
+                                           value="{{ $role->id }}"
+                                           @if ($user->roles->contains('id', $role->id)) checked @endif>
+                                    <span></span>
+                                </label>
+                            </td>
+                            <td>
+                                {{ $role->name }}
+                            </td>
+                            <td>
+                                {{ $role->description }}
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
                     <tr>
-                        <td>
-                            <label class="kt-checkbox kt-checkbox--brand">
-                                <input type="checkbox" name="roles[]"
-                                       value="{{ $role->id }}"
-                                       @if ($user->roles->contains('id', $role->id)) checked @endif>
-                                <span></span>
-                            </label>
-                        </td>
-                        <td>
-                            {{ $role->name }}
-                        </td>
-                        <td>
-                            {{ $role->description }}
-                        </td>
-                    </tr>
-                @endforeach
+                        <td class="text-center" colspan="3">Groups are empty!</td>
+                    <tr>
+                @endif
                 </tbody>
             </table>
         </div>
