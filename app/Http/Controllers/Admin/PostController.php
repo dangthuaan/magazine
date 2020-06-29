@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Throwable;
 
@@ -43,6 +45,7 @@ class PostController extends Controller
      * Display add new post form.
      *
      * @return JsonResponse
+     * @throws Throwable
      */
     public function form()
     {
@@ -72,14 +75,24 @@ class PostController extends Controller
      *
      * @param PostRequest $request
      * @return JsonResponse
+     * @throws Throwable
      */
     public function store(PostRequest $request)
     {
-        $newPost = $this->post->new(Auth::id(), $request->except('_token'), true);
+        DB::beginTransaction();
 
-        $newCategoryPost = $this->post->attachCategory($newPost, $request->categories);
+        try {
+            $newPost = $this->post->new(Auth::id(), $request->except('_token'), true);
 
-        if (!$newPost || !$newCategoryPost) {
+            $this->post->attachCategory($newPost, $request->categories);
+
+            DB::commit();
+
+        } catch (Throwable $th) {
+            Log::error($th);
+
+            DB::rollBack();
+
             return response()->json([
                 'status' => false
             ]);
@@ -122,15 +135,26 @@ class PostController extends Controller
      * @param PostRequest $request
      * @param $id
      * @return JsonResponse
+     * @throws Throwable
      */
     public function update(PostRequest $request, $id)
     {
-        $updatePost = $this->post->edit(Auth::id(), $id, $request->only('cover', 'old_cover', 'title', 'content'),
-            true);
+        DB::beginTransaction();
 
-        $updateCategoryPost = $this->post->syncCategory($this->post->find($id), $request->categories);
+        try {
+            $this->post->edit(Auth::id(), $id,
+                $request->only('cover', 'old_cover', 'title', 'content'),
+                true);
 
-        if (!$updatePost || !$updateCategoryPost) {
+            $this->post->syncCategory($this->post->find($id), $request->categories);
+
+            DB::commit();
+
+        } catch (Throwable $th) {
+            Log::error($th);
+
+            DB::rollBack();
+
             return response()->json([
                 'status' => false
             ]);
@@ -140,7 +164,6 @@ class PostController extends Controller
             'status' => true,
             'html' => view('admin.posts.each_body', ['post' => $this->post->find($id)])->render(),
         ]);
-
     }
 
     /**
@@ -163,6 +186,7 @@ class PostController extends Controller
      *
      * @param $id
      * @return JsonResponse
+     * @throws Throwable
      */
     public function restore($id)
     {
@@ -185,6 +209,7 @@ class PostController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws Throwable
      */
     public function search(Request $request)
     {

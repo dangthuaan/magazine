@@ -38,6 +38,7 @@ class PermissionController extends Controller
      *
      * @param int $id
      * @return JsonResponse
+     * @throws \Throwable
      */
     public function show($id)
     {
@@ -75,16 +76,5 @@ class PermissionController extends Controller
         return response()->json([
             'status' => $attachPermissionRole
         ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

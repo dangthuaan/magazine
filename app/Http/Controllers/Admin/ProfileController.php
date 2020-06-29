@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use Throwable;
 
 class ProfileController extends Controller
 {
@@ -68,7 +69,7 @@ class ProfileController extends Controller
      *
      * @param ProfileRequest $request
      * @return JsonResponse
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function update(ProfileRequest $request, $username)
     {
@@ -114,7 +115,6 @@ class ProfileController extends Controller
         return response()->json([
             'status' => true,
         ]);
-
     }
 
     /**
