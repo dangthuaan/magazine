@@ -20,6 +20,11 @@ class RegisterController extends Controller
     protected $user;
 
     /**
+     * @var Model Role
+     */
+    protected $role;
+
+    /**
      * Register User Constructor
      *
      * @param UserInterface $user
@@ -28,6 +33,7 @@ class RegisterController extends Controller
     public function __construct(UserInterface $user, RoleInterface $role)
     {
         $this->user = $user;
+        $this->role = $role;
     }
 
     /**
@@ -48,7 +54,15 @@ class RegisterController extends Controller
      */
     public function store(RegisterRequest $request)
     {
+        $defaultRole = $this->role->find('%Normal%', 'LIKE', 'name');
+
+        if (!$defaultRole) {
+            return back()->with('error', 'We\'re sorry. Our Permissions are not setup yet! Please comeback later..');
+        }
+
         $registration = $this->user->register($request->except('password_confirmation'), true);
+
+        $this->role->attachRoleUser($registration, $defaultRole->id);
 
         if ($registration) {
             return redirect()->route('auth.register.verify.index', ['id' => $registration->id]);

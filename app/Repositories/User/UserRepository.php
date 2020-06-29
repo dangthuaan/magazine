@@ -41,10 +41,9 @@ class UserRepository extends BaseRepository implements UserInterface
      * @param User $model
      * @param RoleInterface $role
      */
-    public function __construct(User $model, RoleInterface $role)
+    public function __construct(User $model)
     {
         parent::__construct($model);
-        $this->role = $role;
     }
 
     /**

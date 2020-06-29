@@ -67,7 +67,7 @@
             </div>
 
             @endif
-            
+
         </section>
         <!-- End Main Latest post -->
 
