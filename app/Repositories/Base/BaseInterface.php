@@ -47,6 +47,17 @@ interface BaseInterface
     public function findAll($data, $operator = '=', $attribute = 'id');
 
     /**
+     * Find all resource.
+     *
+     * @param $relations
+     * @param $data
+     * @param string $operator
+     * @param string $attribute
+     * @return Collection|Model[]
+     */
+    public function findAllWith($relations, $data, $operator = '=', $attribute = 'id');
+
+    /**
      * Create new resource.
      *
      * @param array $data

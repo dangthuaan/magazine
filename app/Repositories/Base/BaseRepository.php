@@ -82,6 +82,20 @@ class BaseRepository implements BaseInterface
     }
 
     /**
+     * Find all resource with relations.
+     *
+     * @param $relations
+     * @param $data
+     * @param string $operator
+     * @param string $attribute
+     * @return Collection|Model[]
+     */
+    public function findAllWith($relations, $data, $operator = '=', $attribute = 'id')
+    {
+        return $this->model->with($relations)->where($attribute, $operator, $data)->get();
+    }
+
+    /**
      * Create new resource.
      *
      * @param array $data

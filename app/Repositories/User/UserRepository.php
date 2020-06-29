@@ -6,6 +6,7 @@ use App\Mail\ResetPassword;
 use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Repositories\Base\BaseRepository;
+use App\Repositories\Role\RoleInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
@@ -28,14 +29,22 @@ class UserRepository extends BaseRepository implements UserInterface
      */
     protected $model;
 
+
+    /**
+     * @var Model Role
+     */
+    protected $role;
+
     /**
      * Base Constructor
      *
      * @param User $model
+     * @param RoleInterface $role
      */
-    public function __construct(User $model)
+    public function __construct(User $model, RoleInterface $role)
     {
         parent::__construct($model);
+        $this->role = $role;
     }
 
     /**
@@ -44,18 +53,29 @@ class UserRepository extends BaseRepository implements UserInterface
      * @param array $data
      * @param bool $return_object
      * @return bool
+     * @throws Throwable
      */
     public function register($data, $return_object = false)
     {
         $data['password'] = Hash::make($data['password']);
 
+        DB::beginTransaction();
+
         try {
             $newUser = $this->create($data);
 
+            $defaultRole = $this->role->find('%Normal%', 'LIKE', 'name');
+
+            $this->role->attachRoleUser($newUser, $defaultRole->id);
+
             $this->sendVerifyEmail($newUser);
+
+            DB::commit();
 
         } catch (Throwable $th) {
             Log::error($th);
+
+            DB::rollBack();
 
             return false;
         }
