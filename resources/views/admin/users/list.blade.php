@@ -82,6 +82,9 @@
 
         <!-- end:: Content -->
     </div>
+
+    @include('admin.users.modals.group')
+
 @endsection
 
 @section('css')
@@ -138,6 +141,68 @@
             let inputString = $(this).parent().prev().val();
 
             findUsers(inputString);
+        });
+
+        $(document).on('click', '.assign-user-role', function (e) {
+            let userId = $(this).data('user-id');
+
+            let url = '/admin/users/' + userId + '/roles';
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    if (!result.status) {
+                        return errorMessage();
+                    }
+
+                    $('#assignUserRoleModal').find('.modal-body').html(result.html);
+
+                    $('#assignUserRoleModal').modal('show');
+                },
+                error: function () {
+                    return errorMessage();
+                }
+            });
+        });
+
+        $(document).on('click', '#assignUserRoleModal button[type=\'submit\']', function (e) {
+            e.preventDefault();
+
+            let userId = $(this).parent().prev().find('#assignUserRoleModalForm').data('user-id');
+
+            let url = '/admin/users/' + userId + '/roles';
+
+            let formData = $('#assignUserRoleModalForm').serialize();
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                cache: false,
+                global: false,
+                success: function (result) {
+                    if (!result.status) {
+                        return errorMessage();
+                    }
+
+                    toast("User Group assigned successfully!");
+
+                    $('#assignUserRoleModal').modal('hide');
+                },
+                error: function () {
+                    return errorMessage();
+                },
+                beforeSend: function () {
+                    $('#edit-modal-ajax-loading').slideDown();
+                    $('#dom-disabled').show();
+                },
+                complete: function () {
+                    $('#edit-modal-ajax-loading').slideUp();
+                    $('#dom-disabled').hide();
+                }
+            });
         });
 
         $(document).on('keypress', '#search-user-input', function (e) {

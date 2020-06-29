@@ -16,6 +16,9 @@
          <a class="dropdown-item sweetalert_block_user"
             href="javascript:;" data-user-id="{{ $user->id ?? $id }}"><i
                  class="la la-unlock"></i> Block</a>
+          <a class="dropdown-item assign-user-role"
+             href="javascript:;" data-user-id="{{ $user->id ?? $id }}"><i
+                  class="la la-group"></i> Assign Group</a>
       </div>
    </span>
 </td>

@@ -33,7 +33,7 @@ class Category extends Model
      */
     public function posts()
     {
-        return $this->belongsToMany('App\Models\Post');
+        return $this->belongsToMany('App\Models\Post')->withTimestamps();
     }
 
     /**

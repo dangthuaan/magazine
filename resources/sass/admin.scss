@@ -120,26 +120,31 @@
     margin-top: -1px;
 }
 
-table.set-role .kt-portlet__head-actions .search-form button i {
+table.set-role-table .kt-portlet__head-actions .search-form button i {
     padding-right: 0;
     color: #fff;
 }
 
-table.set-role .kt-checkbox.kt-checkbox--brand > input:checked {
+table.set-role-table .kt-checkbox.kt-checkbox--brand > input:checked {
     background: #0abb87;
 }
 
-table.set-role .kt-checkbox.kt-checkbox--brand > input:checked ~ span {
+table.set-role-table .kt-checkbox.kt-checkbox--brand > input:checked ~ span {
     border: 1px solid #0abb87;
     background: #0abb87;
     color: #fff;
 }
 
-table.set-role .kt-checkbox.kt-checkbox--brand > span:after {
+table.set-role-table .kt-checkbox.kt-checkbox--brand > input:disabled ~ span {
+    background-color: #ebedf2;
+    border-color: #ebedf2;
+}
+
+table.set-role-table .kt-checkbox.kt-checkbox--brand > span:after {
     border: solid #fff;
 }
 
-table.set-role tbody th {
+table.set-role-table tbody th {
     font-weight: 500;
 }
 
@@ -174,4 +179,41 @@ table.set-role tbody th {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+table.assign-role-table td {
+    border: 1px solid #ebedf2;
+}
+
+table.assign-role-table tr td:first-child, table.assign-role-table tr th:first-child {
+    width: 15px;
+}
+
+table.assign-role-table .kt-checkbox.kt-checkbox--brand > input:checked {
+    background: #0abb87;
+}
+
+table.assign-role-table .kt-checkbox.kt-checkbox--brand > input:checked ~ span {
+    border: 1px solid #0abb87;
+    background: #0abb87;
+    color: #fff;
+}
+
+table.assign-role-table .kt-checkbox.kt-checkbox--brand > input:disabled ~ span {
+    background-color: #ebedf2;
+    border-color: #ebedf2;
+}
+
+table.assign-role-table .kt-checkbox.kt-checkbox--brand > span:after {
+    border: solid #fff;
+}
+
+table.assign-role-table thead th {
+    font-weight: 600;
+}
+
+table.assign-role-table .kt-checkbox {
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-right: -5px;
 }

@@ -96,8 +96,32 @@ Route::middleware(['auth', 'verified'])
         //search user
         Route::get('/users/search', 'UserController@search')->name('users.search');
 
+        //show user role form
+        Route::get('/users/{id}/roles', 'UserController@showRole')->name('users.roles.show');
 
-        Route::get('/groups', 'UserController@group')->name('users.group');
+        //set user role
+        Route::post('/users/{id}/roles', 'UserController@assignRole')->name('users.roles.assign');
+
+        //user groups (roles)
+        Route::get('/groups', 'RoleController@index')->name('users.group');
+
+        //new groups (roles)
+        Route::post('/groups', 'RoleController@store')->name('users.group.store');
+
+        //show group (role)
+        Route::get('/groups/{id}', 'RoleController@edit')->name('users.group.edit');
+
+        //update group (role)
+        Route::put('/groups/{id}', 'RoleController@update')->name('users.group.update');
+
+        //delete group (role)
+        Route::delete('/groups/{id}', 'RoleController@destroy')->name('users.group.destroy');
+
+        //permissions
+        Route::get('/groups/{id}/permissions', 'PermissionController@show')->name('users.group.permission.show');
+
+        //permission role update
+        Route::post('/groups/{id}/permissions', 'PermissionController@update')->name('users.group.permission.update');
 
         //posts
         Route::get('/posts', 'PostController@list')->name('posts.list');

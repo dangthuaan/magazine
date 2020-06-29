@@ -167,6 +167,8 @@ return [
         App\Providers\CategoryServiceProvider::class,
         App\Providers\PostServiceProvider::class,
         App\Providers\CommentServiceProvider::class,
+        App\Providers\RoleServiceProvider::class,
+        App\Providers\PermissionServiceProvider::class,
 
         /*
          * Package Service Providers...
