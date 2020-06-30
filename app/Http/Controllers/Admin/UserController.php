@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Repositories\Role\RoleInterface;
 use App\Repositories\User\UserInterface;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,6 +48,8 @@ class UserController extends Controller
      */
     public function showRole($id)
     {
+        $this->authorize('update', User::class);
+
         $user = $this->user->findWith(['roles'], $id);
 
         $roles = $this->role->all(['users']);
@@ -72,6 +76,8 @@ class UserController extends Controller
      */
     public function assignRole(Request $request, $id)
     {
+        $this->authorize('update', User::class);
+
         $user = $this->user->find($id);
 
         $assignRole = $this->role->syncRoleUser($user, $request->roles);
@@ -92,9 +98,12 @@ class UserController extends Controller
      * Display all users.
      *
      * @return Application|Factory|View
+     * @throws AuthorizationException
      */
     public function list()
     {
+        $this->authorize('view', User::class);
+
         $users = $this->user->findAllWith(['roles'], null, '!=', $attribute = 'email_verified_at');
 
         $roles = $this->role->all(['users']);
@@ -115,6 +124,8 @@ class UserController extends Controller
      */
     public function block(Request $request)
     {
+        $this->authorize('update', User::class);
+
         $blockUser = $this->user->block($request->user_id);
 
         if (!$blockUser) {
@@ -140,6 +151,8 @@ class UserController extends Controller
      */
     public function unblock(Request $request)
     {
+        $this->authorize('update', User::class);
+
         $blockUser = $this->user->unblock($request->user_id);
 
         if (!$blockUser) {
@@ -161,9 +174,13 @@ class UserController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws AuthorizationException
+     * @throws Throwable
      */
     public function search(Request $request)
     {
+        $this->authorize('view', User::class);
+
         $usersResult = $this->user->search($request->search,
             ['first_name', 'last_name', 'username', 'email', 'location', 'phone']);
 

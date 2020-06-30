@@ -117,6 +117,27 @@ class User extends Authenticatable
     {
         return $this->is_block;
     }
-    
 
+    /**
+     * Check if user is super admin.
+     *
+     * @return boolean
+     */
+    public function isSuperAdmin()
+    {
+        return $this->roles->contains('name', 'Administrator');
+    }
+
+    /**
+     * Check if user has permissions
+     *
+     * @param string $permission
+     * @return bool
+     */
+    public function hasPermission($permission)
+    {
+        $permission = Permission::with('roles')->where('code', $permission)->first();
+
+        return !!$permission->roles->intersect($this->roles)->count();
+    }
 }

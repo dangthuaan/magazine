@@ -49,22 +49,22 @@
                                 <input class="form-control @error('username') is-invalid @enderror" type="text"
                                        placeholder="Username or Email" name="username"
                                        autocomplete="off">
-                            </div>
-                            @error('username')
-                            <span class="invalid-feedback" role="alert">
+                                @error('username')
+                                <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
-                            @enderror
+                                @enderror
+                            </div>
 
                             <div class="input-group">
                                 <input class="form-control @error('password') is-invalid @enderror" type="password"
                                        placeholder="Password" name="password">
-                            </div>
-                            @error('password')
-                            <span class="invalid-feedback" role="alert">
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
-                            @enderror
+                                @enderror
+                            </div>
 
                             <div class="row kt-login__extra">
                                 <div class="col">

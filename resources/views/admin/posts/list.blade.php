@@ -45,11 +45,12 @@
                                         </div>
                                     </form>
 
-                                    &nbsp;
-                                    <a href="#" class="btn btn-brand add-new btn-elevate btn-icon-sm" id="newPost">
-                                        <i class="la la-plus"></i>
-                                        New Post
-                                    </a>
+                                    &nbsp;@can('posts.create')
+                                        <a href="#" class="btn btn-brand add-new btn-elevate btn-icon-sm" id="newPost">
+                                            <i class="la la-plus"></i>
+                                            New Post
+                                        </a>
+                                    @endcan
                                 </div>
                             </div>
                         </div>

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
+use App\Models\Role;
 use App\Repositories\Permission\PermissionInterface;
 use App\Repositories\Role\RoleInterface;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,9 +43,12 @@ class RoleController extends Controller
      * Display a listing of the resource.
      *
      * @return Application|Factory|View
+     * @throws AuthorizationException
      */
     public function index()
     {
+        $this->authorize('view', Role::class);
+
         $roles = $this->role->all(['users']);
 
         return view('admin.groups.list', compact('roles'));
@@ -58,6 +63,8 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request)
     {
+        $this->authorize('create', Role::class);
+
         $newRole = $this->role->new($request->only('name', 'description'), true);
 
         if (!$newRole) {
@@ -73,7 +80,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the group.
      *
      * @param int $id
      * @return JsonResponse
@@ -81,6 +88,8 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('update', Role::class);
+
         $role = $this->role->find($id);
 
         if (!$role) {
@@ -105,6 +114,8 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, $id)
     {
+        $this->authorize('update', Role::class);
+
         $updateRole = $this->role->edit($id, $request->only('name', 'description'));
 
         $role = $this->role->find($id);
@@ -127,9 +138,12 @@ class RoleController extends Controller
      *
      * @param $id
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function destroy($id)
     {
+        $this->authorize('delete', Role::class);
+
         $removeRole = $this->role->destroy($id);
 
         return response()->json([
