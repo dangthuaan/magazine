@@ -114,19 +114,23 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="kt-portlet__foot">
-                                        <div class="kt-form__actions">
-                                            <div class="row">
-                                                <div class="col-lg-12 col-xl-12">
-                                                    <button type="submit" class="btn btn-brand btn-bold float-left"
-                                                            data-user-id="{{ Auth::id() }}">
-                                                        Change
-                                                        Password
-                                                    </button>&nbsp;
+
+                                    @can('profile.update')
+                                        <div class="kt-portlet__foot">
+                                            <div class="kt-form__actions">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-xl-12">
+                                                        <button type="submit" class="btn btn-brand btn-bold float-left"
+                                                                data-user-id="{{ Auth::id() }}">
+                                                            Change
+                                                            Password
+                                                        </button>&nbsp;
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endcan
+
                                 </form>
                             </div>
                         </div>

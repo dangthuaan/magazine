@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
+use App\Models\Post;
 use App\Repositories\Category\CategoryInterface;
 use App\Repositories\Post\PostInterface;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Model;
@@ -60,9 +62,12 @@ class PostController extends Controller
      * Display all posts.
      *
      * @return Application|Factory|View
+     * @throws AuthorizationException
      */
     public function list()
     {
+        $this->authorize('view', Post::class);
+
         $posts = $this->post->list(['user', 'categories'], 'desc', config('pagination.posts'));
 
         $categories = $this->category->all(['childs']);
@@ -79,6 +84,8 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
+        $this->authorize('create', Post::class);
+
         DB::beginTransaction();
 
         try {
@@ -113,6 +120,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('update', Post::class);
+
         $post = $this->post->findWith('categories', $id);
 
         $categories = $this->category->all(['childs']);
@@ -139,6 +148,8 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
+        $this->authorize('update', Post::all());
+
         DB::beginTransaction();
 
         try {
@@ -171,9 +182,12 @@ class PostController extends Controller
      *
      * @param $id
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function destroy($id)
     {
+        $this->authorize('delete', Post::class);
+
         $remove = $this->post->destroy($id);
 
         return response()->json([
@@ -213,6 +227,8 @@ class PostController extends Controller
      */
     public function search(Request $request)
     {
+        $this->authorize('view', Post::class);
+
         $postResult = $this->post->search($request->search,
             ['title', 'content'], ['categories']);
 

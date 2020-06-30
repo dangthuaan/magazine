@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EmailResetRequest;
 use App\Http\Requests\PasswordChangeRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Models\User;
 use App\Repositories\Profile\ProfileInterface;
 use App\Repositories\User\UserInterface;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,25 +44,31 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display profile overview page.
      *
      * @param $username
      * @return Application|Factory|View
+     * @throws AuthorizationException
      */
     public function overview($username)
     {
+        $this->authorize('overviewProfile', User::class);
+
         $user = $this->profile->find($username, '=', 'username');
 
         return view('admin.profile.overview', compact('user'));
     }
 
     /**
-     * Display a listing of the resource.
+     * Display change password page.
      *
      * @return Application|Factory|View
+     * @throws AuthorizationException
      */
     public function password()
     {
+        $this->authorize('updateProfile', User::class);
+
         return view('admin.profile.password', ['user' => Auth::user()]);
     }
 
@@ -68,11 +76,16 @@ class ProfileController extends Controller
      * Update profile information.
      *
      * @param ProfileRequest $request
+     * @param $username
      * @return JsonResponse
+     *
+     * @throws AuthorizationException
      * @throws Throwable
      */
     public function update(ProfileRequest $request, $username)
     {
+        $this->authorize('updateProfile', User::class);
+
         $data = $request->except(['email', 'username', '_token']);
 
         if ($request->hasFile('avatar')) {
@@ -101,9 +114,12 @@ class ProfileController extends Controller
      *
      * @param PasswordChangeRequest $request
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function updatePassword(PasswordChangeRequest $request)
     {
+        $this->authorize('updateProfile', User::class);
+
         $updatePassword = $this->profile->update(Auth::id(), ['password' => Hash::make($request->new_password)]);
 
         if (!$updatePassword) {
@@ -122,9 +138,12 @@ class ProfileController extends Controller
      *
      * @param EmailResetRequest $request
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function forgotPassword(EmailResetRequest $request)
     {
+        $this->authorize('updateProfile', User::class);
+
         $email = $request->email;
 
         $userEmailValid = $this->user->checkValidEmail($email);

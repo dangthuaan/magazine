@@ -32,32 +32,37 @@
                     <div class="kt-portlet__head-toolbar">
                         <div class="kt-portlet__head-wrapper">
                             <div class="kt-portlet__head-actions">
-                                <div class="dropdown dropdown-inline selected-dropdown" style="display: none;">
-                                    <button type="button" class="btn btn-default btn-icon-sm dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="la la-calendar-check-o"></i> Selected
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <ul class="kt-nav">
-                                            <li class="kt-nav__section kt-nav__section--first">
-                                                <span class="kt-nav__section-text">Choose an option</span>
-                                            </li>
-                                            <li class="kt-nav__item">
-                                                <a href="javascript:;" class="kt-nav__link sweetalert_block_users">
-                                                    <i class="kt-nav__link-icon la la-unlock"></i>
-                                                    <span class="kt-nav__link-text">Block</span>
-                                                </a>
-                                            </li>
-                                            <li class="kt-nav__item">
-                                                <a href="javascript:;" class="kt-nav__link sweetalert_unblock_users">
-                                                    <i class="kt-nav__link-icon la la-unlock-alt"></i>
-                                                    <span class="kt-nav__link-text">Un-Block</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+
+                                @can('users.update')
+                                    <div class="dropdown dropdown-inline selected-dropdown" style="display: none;">
+                                        <button type="button" class="btn btn-default btn-icon-sm dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="la la-calendar-check-o"></i> Selected
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <ul class="kt-nav">
+                                                <li class="kt-nav__section kt-nav__section--first">
+                                                    <span class="kt-nav__section-text">Choose an option</span>
+                                                </li>
+                                                <li class="kt-nav__item">
+                                                    <a href="javascript:;" class="kt-nav__link sweetalert_block_users">
+                                                        <i class="kt-nav__link-icon la la-unlock"></i>
+                                                        <span class="kt-nav__link-text">Block</span>
+                                                    </a>
+                                                </li>
+                                                <li class="kt-nav__item">
+                                                    <a href="javascript:;"
+                                                       class="kt-nav__link sweetalert_unblock_users">
+                                                        <i class="kt-nav__link-icon la la-unlock-alt"></i>
+                                                        <span class="kt-nav__link-text">Un-Block</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                &nbsp;
+                                    &nbsp;
+                                @endcan
+
                                 <form class="kt-form kt-form--label-right search-form" style="display:inline-block;"
                                       method="GET">
                                     <div class="input-group">

@@ -5,19 +5,24 @@
     </a>
     <div class="dropdown-menu dropdown-menu-right">
         <ul class="kt-nav">
-            <li class="kt-nav__item">
-                <a class="kt-nav__link edit-post" data-post-id="{{ $post->id }}">
-                    <i class="kt-nav__link-icon flaticon2-edit"></i>
-                    <span class="kt-nav__link-text">Edit</span>
-                </a>
-            </li>
-            <li class="kt-nav__item">
-                <a href="javascript:;"
-                   class="kt-nav__link remove-post" data-post-id="{{ $post->id }}">
-                    <i class="kt-nav__link-icon flaticon2-trash"></i>
-                    <span class="kt-nav__link-text">Remove</span>
-                </a>
-            </li>
+            @can ('posts.update')
+                <li class="kt-nav__item">
+                    <a class="kt-nav__link edit-post" data-post-id="{{ $post->id }}">
+                        <i class="kt-nav__link-icon flaticon2-edit"></i>
+                        <span class="kt-nav__link-text">Edit</span>
+                    </a>
+                </li>
+            @endcan
+
+            @can('posts.delete')
+                <li class="kt-nav__item">
+                    <a href="javascript:;"
+                       class="kt-nav__link remove-post" data-post-id="{{ $post->id }}">
+                        <i class="kt-nav__link-icon flaticon2-trash"></i>
+                        <span class="kt-nav__link-text">Remove</span>
+                    </a>
+                </li>
+            @endcan
         </ul>
     </div>
 </div>

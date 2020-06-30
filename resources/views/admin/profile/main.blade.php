@@ -172,18 +172,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="kt-portlet__foot">
-                                <div class="kt-form__actions">
-                                    <div class="row">
-                                        <div class="col-lg-12 col-xl-12">
-                                            <button type="submit" class="btn btn-success float-left"
-                                                    data-username="{{ $user->username }}">Update
-                                                Information
-                                            </button>&nbsp;
+
+                            @can('profile.update')
+                                <div class="kt-portlet__foot">
+                                    <div class="kt-form__actions">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-xl-12">
+                                                <button type="submit" class="btn btn-success float-left"
+                                                        data-username="{{ $user->username }}">Update
+                                                    Information
+                                                </button>&nbsp;
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endcan
                         </form>
                     </div>
                 </div>

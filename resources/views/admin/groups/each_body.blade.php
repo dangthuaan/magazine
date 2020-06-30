@@ -12,11 +12,17 @@
                <i class="la la-ellipsis-h"></i>
                </a>
                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item edit-group" href="#" data-role-id="{{ $role->id }}"><i class="la la-edit"></i> Edit</a>
-                  <a class="dropdown-item set-role" href="#" data-role-id="{{ $role->id }}"><i
-                          class="la la-list-alt"></i> Set Role</a>
-                  <a class=" dropdown-item remove-group" href="#" data-role-id="{{ $role->id }}"><i
-                          class="la la-trash-o"></i> Remove</a>
+                   @can('roles.update')
+                       <a class="dropdown-item edit-group" href="#" data-role-id="{{ $role->id }}"><i
+                               class="la la-edit"></i> Edit</a>
+                       <a class="dropdown-item set-role" href="#" data-role-id="{{ $role->id }}"><i
+                               class="la la-list-alt"></i> Set Role</a>
+                   @endcan
+
+                   @can('roles.delete')
+                       <a class=" dropdown-item remove-group" href="#" data-role-id="{{ $role->id }}"><i
+                               class="la la-trash-o"></i> Remove</a>
+                   @endcan
                </div>
             </span>
 </td>

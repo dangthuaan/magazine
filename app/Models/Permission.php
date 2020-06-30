@@ -21,7 +21,7 @@ class Permission extends Model
     }
 
     /**
-     * get permission id with code name.
+     * get exception permissions.
      * @return bool
      */
     public function isException()
@@ -31,7 +31,6 @@ class Permission extends Model
                 'profile_create',
                 'profile_delete',
                 'user_create',
-                'user_update',
                 'user_delete'
             ]);
     }

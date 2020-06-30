@@ -29,18 +29,22 @@
                             All User Groups
                         </h3>
                     </div>
-                    <div class="kt-portlet__head-toolbar">
-                        <div class="kt-portlet__head-wrapper">
-                            <div class="kt-portlet__head-actions">
-                                &nbsp;
-                                <a href="javascript:;" class="btn btn-brand add-new btn-elevate btn-icon-sm"
-                                   id="newGroup">
-                                    <i class="la la-plus"></i>
-                                    New Group
-                                </a>
+
+                    @can('roles.create')
+                        <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                                <div class="kt-portlet__head-actions">
+                                    &nbsp;
+                                    <a href="javascript:;" class="btn btn-brand add-new btn-elevate btn-icon-sm"
+                                       id="newGroup">
+                                        <i class="la la-plus"></i>
+                                        New Group
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endcan
+
                 </div>
                 <div class="kt-portlet__body list-group">
                     @include('admin.groups.body')
