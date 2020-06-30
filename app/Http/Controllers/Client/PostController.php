@@ -35,16 +35,6 @@ class PostController extends Controller
     }
 
     /**
-     * Display list of posts.
-     *
-     * @return Application|Factory|View
-     */
-    public function index()
-    {
-        return view('client.posts.index');
-    }
-
-    /**
      * Display a specific post.
      *
      * @param $id
@@ -52,7 +42,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = $this->post->find($id);
+        $post = $this->post->findWith(['comments.user'], $id);
 
         $previous = $this->post->findAll($id, '<')->max('id');
 

@@ -64,8 +64,6 @@ Route::middleware('verified')
     ->group(function () {
         Route::get('/', 'HomeController@index')->name('index');
 
-        Route::get('/posts', 'PostController@index')->name('posts.index');
-
         Route::get('/post/{id}', 'PostController@show')->name('posts.show');
 
         Route::post('/post/{id}/comment', 'CommentController@store')->name('comments.store');

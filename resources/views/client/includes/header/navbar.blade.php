@@ -41,9 +41,6 @@
                 <a href="{{ route('client.index') }}">Home</a>
             </li>
             <li>
-                <a href="{{ route('client.posts.index') }}">Posts</a>
-            </li>
-            <li>
                 <a href="#" data-toggle="modal" data-target="#loginModal">Login</a>
             </li>
             <li>

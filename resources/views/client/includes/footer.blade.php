@@ -9,9 +9,6 @@
                     <li>
                         <a href="{{ route('client.index') }}">Home</a>
                     </li>
-                    <li>
-                        <a href="{{ route('client.posts.index') }}">Posts</a>
-                    </li>
                 </ul>
             </div>
 
@@ -19,7 +16,8 @@
 
         <div class="footer-bottom row align-items-center">
             <p class="footer-text m-0 col-lg-8 col-md-12">
-                Copyright &copy; 2020 All rights reserved | This template is made with <i class="fas fa-heart"></i> by <a href="#">Colorlib</a>
+                Copyright &copy; 2020 All rights reserved | This template is made with <i class="fas fa-heart"></i> by
+                <a href="#">Colorlib</a>
             </p>
             <div class="col-lg-4 col-md-12 footer-social">
                 <a href="#">

@@ -20,6 +20,10 @@
                 }
 
                 $('.comment-list').prepend(result.each).hide().fadeIn();
+
+                let count = parseInt($('.comments-number:first .count').text());
+
+                $('.comments-number .count').text(count + 1);
             },
             error: function () {
                 errorClient();
@@ -57,6 +61,10 @@
                         $('.single-comment.comment-' + commentId).fadeOut(function () {
                             $(this).remove();
                         });
+
+                        let count = parseInt($('.comments-number:first .count').text());
+
+                        $('.comments-number .count').text(count - 1);
                     },
                     error: function () {
                         return errorClient();

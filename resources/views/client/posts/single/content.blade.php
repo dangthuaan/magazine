@@ -36,9 +36,9 @@
             </a>
         </li>
         <li>
-            <a href="#">
+            <a href="#" class="comments-number">
                 <span class="lnr lnr-bubble"></span>
-                {{ $post->comments()->count() }} Comments
+                <span class="count">{{ $post->comments->count() }}</span> Comments
             </a>
         </li>
     </ul>
