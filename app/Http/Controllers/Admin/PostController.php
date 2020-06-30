@@ -148,7 +148,7 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        $this->authorize('update', Post::all());
+        $this->authorize('update', Post::class);
 
         DB::beginTransaction();
 

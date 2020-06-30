@@ -5,7 +5,7 @@
     </a>
     <div class="dropdown-menu dropdown-menu-right">
         <ul class="kt-nav">
-            @can ('posts.update')
+            @can('posts.update', $post)
                 <li class="kt-nav__item">
                     <a class="kt-nav__link edit-post" data-post-id="{{ $post->id }}">
                         <i class="kt-nav__link-icon flaticon2-edit"></i>
@@ -14,7 +14,7 @@
                 </li>
             @endcan
 
-            @can('posts.delete')
+            @can('posts.delete', $post)
                 <li class="kt-nav__item">
                     <a href="javascript:;"
                        class="kt-nav__link remove-post" data-post-id="{{ $post->id }}">
