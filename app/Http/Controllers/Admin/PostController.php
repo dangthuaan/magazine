@@ -120,7 +120,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $this->authorize('update', Post::class);
+        $this->authorize('update', $this->post->find($id));
 
         $post = $this->post->findWith('categories', $id);
 
@@ -144,11 +144,12 @@ class PostController extends Controller
      * @param PostRequest $request
      * @param $id
      * @return JsonResponse
+     * @throws AuthorizationException
      * @throws Throwable
      */
     public function update(PostRequest $request, $id)
     {
-        $this->authorize('update', Post::class);
+        $this->authorize('update', $this->post->find($id));
 
         DB::beginTransaction();
 
@@ -186,7 +187,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('delete', Post::class);
+        $this->authorize('delete', $this->post->find($id));
 
         $remove = $this->post->destroy($id);
 

@@ -38,12 +38,21 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('users.update', 'App\Policies\UserPolicy@update');
 
         //roles
-        Gate::resource('roles', 'App\Policies\RolePolicy');
+        Gate::define('roles.view', 'App\Policies\RolePolicy@view');
+        Gate::define('roles.create', 'App\Policies\RolePolicy@create');
+        Gate::define('roles.update', 'App\Policies\RolePolicy@update');
+        Gate::define('roles.delete', 'App\Policies\RolePolicy@delete');
 
         //posts
-        Gate::resource('posts', 'App\Policies\PostPolicy');
+        Gate::define('posts.view', 'App\Policies\PostPolicy@view');
+        Gate::define('posts.create', 'App\Policies\PostPolicy@create');
+        Gate::define('posts.update', 'App\Policies\PostPolicy@update');
+        Gate::define('posts.delete', 'App\Policies\PostPolicy@delete');
 
         //categories
-        Gate::resource('categories', 'App\Policies\CategoryPolicy');
+        Gate::define('categories.view', 'App\Policies\CategoryPolicy@view');
+        Gate::define('categories.create', 'App\Policies\CategoryPolicy@create');
+        Gate::define('categories.update', 'App\Policies\CategoryPolicy@update');
+        Gate::define('categories.delete', 'App\Policies\CategoryPolicy@delete');
     }
 }

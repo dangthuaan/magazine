@@ -67,7 +67,7 @@ class ProfileController extends Controller
      */
     public function password()
     {
-        $this->authorize('updateProfile', User::class);
+        $this->authorize('overviewProfile', User::class);
 
         return view('admin.profile.password', ['user' => Auth::user()]);
     }
@@ -84,7 +84,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileRequest $request, $username)
     {
-        $this->authorize('updateProfile', User::class);
+        $this->authorize('updateProfile', Auth::user());
 
         $data = $request->except(['email', 'username', '_token']);
 
